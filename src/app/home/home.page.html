@@ -1,18 +1,28 @@
 <ion-header>
-
+    <ion-toolbar>
+        <ion-menu-button slot="start">
+            <ion-icon icon="menu"></ion-icon>
+        </ion-menu-button>
+        <ion-title>Home</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
-        <ion-fab-button id="fabSquare" (click) = "squareClick()">
+        <ion-fab-button id="fabSquare" >
             <img [src]=iconSquare/>
         </ion-fab-button>
 
-        <ion-fab-button id="fabStar" (click)="starClick()">
+        <ion-fab-button id="fabStar" routerLink = "/favorites">
           <img [src]=iconStar/>
         </ion-fab-button>
     </ion-fab>
 
 </ion-content>
+
+<ion-menu>
+
+</ion-menu>
+<ion-router-outlet main></ion-router-outlet>
