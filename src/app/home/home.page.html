@@ -10,6 +10,8 @@
 
 <ion-content>
 
+    <canvas #myCanvas (touchstart) = "touch($event)"></canvas>
+    
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
         <ion-fab-button id="fabSquare" >
             <img [src]=iconSquare/>
@@ -22,7 +24,8 @@
 
 </ion-content>
 
-<ion-menu>
+<ion-menu contentId="menu">
 
 </ion-menu>
-<ion-router-outlet main></ion-router-outlet>
+
+<ion-router-outlet id="menu"></ion-router-outlet>
