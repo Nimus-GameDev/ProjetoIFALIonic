@@ -10,10 +10,10 @@
 
 <ion-content>
 
-    <canvas #myCanvas (touchstart) = "touch($event)"></canvas>
+    <canvas #myCanvas (touchstart) = "pan()" (touchmove) = "pan()" (touchend) = "pan()"></canvas>
     
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
-        <ion-fab-button id="fabSquare" >
+        <ion-fab-button id="fabSquare" (click) = "pan()">
             <img [src]=iconSquare/>
         </ion-fab-button>
 

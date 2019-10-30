@@ -36,8 +36,8 @@ export class HomePage {
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
     this.canvas.style.backgroundColor = 'white';
-    this.canvas.addEventListener('mousedown', evento => {this.down(evento); } );
-    this.canvas.addEventListener('mouseup', evento => {this.up(evento); });
+    //this.canvas.addEventListener('click', evento => {this.pan(); } );
+    //this.canvas.addEventListener('mouseup', evento => {this.up(evento); });
 
     this.contexto = this.canvas.getContext('2d');
 
@@ -54,6 +54,7 @@ export class HomePage {
   }
 
 down(event) {
+  console.log('down');
     this.x2 = this.x;
     this.y2 = this.y;
 
@@ -63,6 +64,7 @@ down(event) {
 }
 
 up(event) {
+  console.log('up');
   this.xAtual = event.clientX;
   this.yAtual = event.clientY;
 
@@ -70,6 +72,19 @@ up(event) {
   this.y += this.yAtual - this.yAnteiror;
   this.draw(this.x, this.y);
   this.press = false;
+}
+
+touch(event) {
+  console.log('down');
+    this.x2 = this.x;
+    this.y2 = this.y;
+
+    this.xAnterior = event.clientX;
+    this.yAnteiror = event.clientY;
+    this.press = true;
+}
+pan() {
+  console.log('pan');
 }
 
 }
