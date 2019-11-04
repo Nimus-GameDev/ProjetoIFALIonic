@@ -18,11 +18,16 @@ export class HomePage {
 
   ngAfterViewInit() {
     this.drawMap.initDraw(this.canvasElement);
-    
   }
 
-  pan() {
-    this.drawMap.pan();
+  onDown(event) {
+    this.drawMap.down(event);
+  }
+  onUp(event) {
+    this.drawMap.up(event);
   }
 
+  onMove(event) {
+    this.drawMap.move(event);
+  }
 }

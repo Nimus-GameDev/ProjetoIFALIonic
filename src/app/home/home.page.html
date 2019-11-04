@@ -10,10 +10,12 @@
 
 <ion-content>
 
-    <canvas #myCanvas (touchstart) = "pan()" (touchmove) = "pan()" (touchend) = "pan()"></canvas>
+    <canvas #myCanvas (touchstart) = "onDown($event)" (touchend) = "onUp($event)" (touchmove)="onMove($event)">
+        <!-- (mousedown)="onDown($event)" (mouseup)="onUp($event)" (mousemove)="onMove($event)"-->
+    </canvas>
     
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
-        <ion-fab-button id="fabSquare" (click) = "pan()">
+        <ion-fab-button id="fabSquare">
             <img [src]=iconSquare/>
         </ion-fab-button>
 
@@ -24,8 +26,9 @@
 
 </ion-content>
 
+<!--
 <ion-menu contentId="menu">
 
 </ion-menu>
 
-<ion-router-outlet id="menu"></ion-router-outlet>
+<ion-router-outlet id="menu"></ion-router-outlet> -->
