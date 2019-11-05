@@ -16,18 +16,23 @@ export class HomePage {
 
   constructor(private drawMap: DrawMapService) {}
 
+  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
     this.drawMap.initDraw(this.canvasElement);
   }
 
   onDown(event) {
-    this.drawMap.down(event);
+    this.drawMap.touchDown(event);
   }
   onUp(event) {
-    this.drawMap.up(event);
+    this.drawMap.touchUp(event);
   }
 
   onMove(event) {
-    this.drawMap.move(event);
+    this.drawMap.touchMove(event);
+  }
+
+  onReset() {
+    this.drawMap.resetPosition();
   }
 }
