@@ -106,10 +106,24 @@ export class DrawMapService {
   }
 
   touchMove(event) {
+    console.log('Alert - touchMove actived.');
+
+    // Get Position X and Y of Touch
+    const clientX = event.changedTouches['0'].clientX;
+    const clientY = event.changedTouches['0'].clientY;
+    // posicao = posicao do mapa + Diferenca relativa a movimentacao do mouse
+    this.touchPosition.xUpdated =  this.x + (clientX - this.touchPosition.initialX) / this.mapSensitivity;
+    this.touchPosition.yUpdated = this.y + (clientY - this.touchPosition.initialY) / this.mapSensitivity;
+
+    // Draw a new rectangle on movimentation relative
+    if ( this.touchIsPressed ) {
+        this.draw(this.touchPosition.xUpdated, this.touchPosition.yUpdated);
+    }
 
   }
 
   resetPosition() {
+    
   }
 
 }
