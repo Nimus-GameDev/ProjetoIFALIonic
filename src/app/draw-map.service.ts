@@ -123,7 +123,20 @@ export class DrawMapService {
   }
 
   resetPosition() {
-    
+    console.log('Alert - resetPosition actived.');
+
+    // Init Position x and y
+    this.x = this.canvas.width / 2;
+    this.y = this.canvas.height / 2;
+
+    this.touchPosition.initialX = 0;
+    this.touchPosition.initialY = 0;
+    this.touchPosition.finalX = 0;
+    this.touchPosition.finalY = 0;
+    this.touchPosition.xUpdated = this.x;
+    this.touchPosition.yUpdated = this.y;
+
+    this.draw(this.x, this.y);
   }
 
 }
