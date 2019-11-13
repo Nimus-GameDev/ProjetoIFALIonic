@@ -1,5 +1,6 @@
 import { Injectable, ElementRef } from '@angular/core';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +11,8 @@ export class DrawMapService {
 
   x: number;
   y: number;
+
+  scale: number = 1;
 
   touchPosition: any = {
     initialX: 0,
@@ -28,6 +31,8 @@ export class DrawMapService {
   initDraw(canvasElement: ElementRef) {
 
     this.canvas = canvasElement.nativeElement;
+
+    console.log(this.canvas);
     // Init Position x and y
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
@@ -46,19 +51,20 @@ export class DrawMapService {
   draw(x: number, y: number) {
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.contexto2D.strokeStyle = 'black';
-    this.contexto2D.strokeRect(x, y, 300, 20);
-    this.contexto2D.strokeRect(x, y, 100, 50);
-    this.contexto2D.strokeRect(x + 100, y, 100, 50);
-    this.contexto2D.strokeRect(x + 200, y, 100, 50);
-    this.contexto2D.strokeRect(x + 20, y + 50, 300, 20);
+    this.contexto2D.strokeRect(x, y, 300 / this.scale, 20 / this.scale);
+    this.contexto2D.strokeRect(x, y, 100 / this.scale, 50 / this.scale);
+    this.contexto2D.strokeRect(x + (100 / this.scale) , y, 100 / this.scale, 50 / this.scale);
+    this.contexto2D.strokeRect(x + (200 / this.scale) , y, 100 / this.scale, 50 / this.scale);
+    this.contexto2D.strokeRect(x + (20 / this.scale) , y + (50 / this.scale ), 300 / this.scale , 20 / this.scale ); 
 
+    /*
     for (let i = 0; i < 2; i++) {
       this.contexto2D.strokeRect(x - i * 2, y + i * 2, 300, 20);
       this.contexto2D.strokeRect(x - i * 2, y + i * 2, 100, 50);
       this.contexto2D.strokeRect(x + 100 - i * 2, y + i * 2, 100, 50);
       this.contexto2D.strokeRect(x + 200 - i * 2, y + i * 2, 100, 50);
       this.contexto2D.strokeRect(x + 20 - i * 2, y + 50 + i * 2, 300, 20);
-    }
+    } */
   }
 
   touchDown(event) {
@@ -136,6 +142,16 @@ export class DrawMapService {
     this.touchPosition.xUpdated = this.x;
     this.touchPosition.yUpdated = this.y;
 
+    this.draw(this.x, this.y);
+  }
+
+  zoomIn() {
+    this.scale -= 0.01;
+    this.draw(this.x, this.y);
+  }
+
+  zoomOut() {
+    this.scale += 0.01;
     this.draw(this.x, this.y);
   }
 

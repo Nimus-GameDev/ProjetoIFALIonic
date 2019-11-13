@@ -35,4 +35,13 @@ export class HomePage {
   onReset() {
     this.drawMap.resetPosition();
   }
+
+  zoomIn() {
+    this.drawMap.zoomIn();
+  }
+
+  zoomOut() {
+    this.drawMap.zoomOut();
+  }
+
 }

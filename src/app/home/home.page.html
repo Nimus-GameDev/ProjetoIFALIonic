@@ -24,6 +24,13 @@
             <img [src]=iconSquare/>
         </ion-fab-button>
 
+        <ion-fab-button style="position: absolute; left: -230px; top: -50px" (click) = "zoomIn()">
+            +
+        </ion-fab-button>
+        <ion-fab-button style="position:absolute; left: -150px; top: -50px;" (click) = "zoomOut()">
+            -
+        </ion-fab-button>
+
         <ion-fab-button id="fabStar" routerLink = "/favorites">
           <img [src]=iconStar/>
         </ion-fab-button>
