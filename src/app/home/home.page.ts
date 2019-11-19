@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { DrawMapService } from '../services/draw-map.service';
 
@@ -10,11 +10,24 @@ import { DrawMapService } from '../services/draw-map.service';
 })
 export class HomePage {
 
-  public iconSquare = '../../assets/images/bntSquare.png';
-  public iconStar = '../../assets/images/bntStar.png';
+  private iconSquareDefault = '../../assets/images/bntSquare.png';
+  private iconStarDefault = '../../assets/images/bntStar.png';
 
-  @ViewChild('myCanvas', {static: false}) canvasElement: ElementRef;
-  constructor(private drawMap: DrawMapService) {}
+  private iconSquareActived = '../../assets/images/bntSquareActived.png';
+
+  public drawSquareActived: boolean = false;
+
+  public iconSquare;
+  public iconStar;
+
+  
+  //public iconStarActived = '../../assets/images/bntStarActived.png';
+
+  @ViewChild('myCanvas', undefined) canvasElement: any;
+  constructor(private drawMap: DrawMapService) {
+    this.iconStar = this.iconStarDefault;
+    this.iconSquare = this.iconSquareDefault;
+  }
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
@@ -42,6 +55,13 @@ export class HomePage {
 
   zoomOut() {
     this.drawMap.zoomOut();
+  }
+
+  onDrawSquare() {
+    this.drawSquareActived = !this.drawSquareActived;
+    this.iconSquare = this.drawSquareActived ? this.iconSquareActived : this.iconSquareDefault;
+
+    console.log('onDrawSquare - Actived? = ', this.drawSquareActived);
   }
 
 }

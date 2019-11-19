@@ -1,10 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <ion-title>favorites</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-back-button slot="start"></ion-back-button>
+        <ion-title>favorites</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+    <ion-card *ngFor="let area of getAreas()">
+
+        <ion-item>
+            <ion-card-title>
+                {{area.name}}
+            </ion-card-title>
+
+            <ion-button fill="outline" slot="end">
+                <ion-icon name="create"></ion-icon>
+            </ion-button>
+
+            <ion-button fill="outline" slot="end" (click)="remove(area)">
+                <ion-icon name="trash"></ion-icon>
+            </ion-button>
+        </ion-item>
+
+        <ion-card-content>
+            {{area.description}}
+        </ion-card-content>
+
+    </ion-card>
 
 </ion-content>

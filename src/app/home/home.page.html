@@ -14,13 +14,13 @@
 
 <ion-content>
 
-    <canvas class="canvas" #myCanvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)">
+    <canvas #myCanvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)">
         <!-- (mousedown)="onDown($event)" (mouseup)="onUp($event)" (mousemove)="onMove($event)"-->
     </canvas>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
 
-        <ion-fab-button id="fabSquare">
+        <ion-fab-button id="fabSquare" (touchstart)="onDrawSquare()">
             <img [src]=iconSquare/>
         </ion-fab-button>
 

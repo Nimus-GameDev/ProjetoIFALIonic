@@ -1,4 +1,4 @@
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 
 @Injectable({
@@ -30,7 +30,7 @@ export class DrawMapService {
 
   constructor() {}
 
-  initDraw(canvasElement: ElementRef) {
+  initDraw(canvasElement: any) {
 
     this.canvas = canvasElement.nativeElement;
 
@@ -44,6 +44,7 @@ export class DrawMapService {
     this.canvas.style.height = '100%';
 
     this.canvas.style.backgroundColor = 'white';
+
     // Context2d in Canvas
     this.contexto2D = this.canvas.getContext('2d');
 
