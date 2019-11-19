@@ -11,8 +11,10 @@ export class DrawMapService {
 
   x: number;
   y: number;
-
   scale: number = 1;
+
+  countDown: number = 0;
+  duploClick: boolean = false;
 
   touchPosition: any = {
     initialX: 0,
@@ -36,9 +38,11 @@ export class DrawMapService {
     // Init Position x and y
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
+
     // Canvas Configurations
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
+
     this.canvas.style.backgroundColor = 'white';
     // Context2d in Canvas
     this.contexto2D = this.canvas.getContext('2d');
@@ -49,14 +53,16 @@ export class DrawMapService {
 
   // Draw Elements
   draw(x: number, y: number) {
+    //console.log('width: ' + this.canvas.width + ' height: ' + this.canvas.height );
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.contexto2D.strokeStyle = 'black';
-    this.contexto2D.strokeRect(x, y, 300 / this.scale, 20 / this.scale);
-    this.contexto2D.strokeRect(x, y, 100 / this.scale, 50 / this.scale);
-    this.contexto2D.strokeRect(x + (100 / this.scale) , y, 100 / this.scale, 50 / this.scale);
-    this.contexto2D.strokeRect(x + (200 / this.scale) , y, 100 / this.scale, 50 / this.scale);
-    this.contexto2D.strokeRect(x + (20 / this.scale) , y + (50 / this.scale ), 300 / this.scale , 20 / this.scale ); 
+    //this.contexto2D.
 
+    this.contexto2D.strokeRect(x + this.scale, y + this.scale, 300 / this.scale, 20 / this.scale);
+    this.contexto2D.strokeRect(x + this.scale, y + this.scale, 100 / this.scale, 50 / this.scale);
+    /*
+    this.contexto2D.strokeRect( (x + 100) / this.scale, y / this.scale, 100 / this.scale, 50 / this.scale);
+    this.contexto2D.strokeRect( ( x + 200) / this.scale, y / this.scale, 100 / this.scale, 50 / this.scale);
+    this.contexto2D.strokeRect( (x + 20) / this.scale, (y + 50) / this.scale, 300 / this.scale, 20 / this.scale); */
     /*
     for (let i = 0; i < 2; i++) {
       this.contexto2D.strokeRect(x - i * 2, y + i * 2, 300, 20);
@@ -69,11 +75,24 @@ export class DrawMapService {
 
   touchDown(event) {
     console.log('Alert - touchDown actived.');
+
+    setTimeout( () => {
+      this.countDown = 0;
+    }, 500);
+
+    this.countDown++;
+
+    this.duploClick = this.countDown % 2 === 0 ? true : false;
+
+    // console.log(this.countDown);
+    console.log('Duplo Click Ativado? = ' + this.duploClick);
+
     // Get Position X and Y of Touch
     const clientX = event.changedTouches['0'].clientX;
     const clientY = event.changedTouches['0'].clientY;
 
-    console.log('touchX= ' + clientX + ' touchY= ' + clientY);
+    // console.log('touchX= ' + clientX + ' touchY= ' + clientY);
+
     // Update the positions X and Y
     this.touchPosition.xUpdated = this.x;
     this.touchPosition.yUpdated = this.y;
@@ -92,27 +111,33 @@ export class DrawMapService {
     const clientX = event.changedTouches['0'].clientX;
     const clientY = event.changedTouches['0'].clientY;
 
-    console.log('touchX= ' + clientX + ' touchY= ' + clientY);
+    //console.log('touchX= ' + clientX + ' touchY= ' + clientY);
 
     // Get final position of touch
     this.touchPosition.finalX = clientX;
     this.touchPosition.finalY = clientY;
 
-    if ( !(this.touchPosition.finalX === this.touchPosition.initialX || this.touchPosition.finalY === this.touchPosition.initialY) ) {
+    // tslint:disable-next-line: max-line-length
+    const positionIsEqual = this.touchPosition.finalX === this.touchPosition.initialX || this.touchPosition.finalY === this.touchPosition.initialY;
+
+    if ( !(positionIsEqual) && !this.duploClick ) {
       this.x += (this.touchPosition.finalX - this.touchPosition.initialX) / this.mapSensitivity;
       this.y += (this.touchPosition.finalY - this.touchPosition.initialY) / this.mapSensitivity;
-      this.draw(this.x, this.y);
-      this.touchIsPressed = false;
-    } else {
-      this.x += this.touchPosition.finalX - this.touchPosition.initialX;
-      this.y += this.touchPosition.finalY - this.touchPosition.initialY;
-      this.draw(this.x, this.y);
-      this.touchIsPressed = false;
     }
+
+    this.draw(this.x, this.y);
+    this.touchIsPressed = false;
+    this.duploClick = false;
   }
 
   touchMove(event) {
-    console.log('Alert - touchMove actived.');
+
+    this.animationMovement(event);
+
+  }
+
+  animationMovement(event) {
+    //console.log('Alert - touchMove actived.');
 
     // Get Position X and Y of Touch
     const clientX = event.changedTouches['0'].clientX;
@@ -122,8 +147,16 @@ export class DrawMapService {
     this.touchPosition.yUpdated = this.y + (clientY - this.touchPosition.initialY) / this.mapSensitivity;
 
     // Draw a new rectangle on movimentation relative
-    if ( this.touchIsPressed ) {
+    if ( this.touchIsPressed && !this.duploClick) {
         this.draw(this.touchPosition.xUpdated, this.touchPosition.yUpdated);
+    } else if ( this.duploClick) {
+
+      if ( clientY > this.touchPosition.initialY) {
+        this.zoomOut();
+      } else if (clientY < this.touchPosition.initialY) {
+        this.zoomIn();
+      }
+
     }
 
   }
@@ -146,12 +179,13 @@ export class DrawMapService {
   }
 
   zoomIn() {
-    this.scale -= 0.01;
+    this.scale -= 0.05;
+
     this.draw(this.x, this.y);
   }
 
   zoomOut() {
-    this.scale += 0.01;
+    this.scale += 0.05;
     this.draw(this.x, this.y);
   }
 

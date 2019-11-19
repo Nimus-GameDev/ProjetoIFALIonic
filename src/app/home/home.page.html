@@ -5,7 +5,7 @@
         </ion-menu-button>
         <ion-title>Home</ion-title>
 
-        <ion-button slot="end" (click) = "onReset()" color="none" fill="clear" expand="block" size="large">
+        <ion-button slot="end" (click)="onReset()" color="none" fill="clear" expand="block" size="large">
             <ion-icon name="refresh" color="dark"></ion-icon>
         </ion-button>
     </ion-toolbar>
@@ -14,25 +14,25 @@
 
 <ion-content>
 
-    <canvas #myCanvas (touchstart) = "onDown($event)" (touchend) = "onUp($event)" (touchmove)="onMove($event)">
+    <canvas class="canvas" #myCanvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)">
         <!-- (mousedown)="onDown($event)" (mouseup)="onUp($event)" (mousemove)="onMove($event)"-->
     </canvas>
-    
+
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
 
         <ion-fab-button id="fabSquare">
             <img [src]=iconSquare/>
         </ion-fab-button>
 
-        <ion-fab-button style="position: absolute; left: -230px; top: -50px" (click) = "zoomIn()">
+        <ion-fab-button style="position: absolute; left: -230px; top: -50px" (click)="zoomIn()">
             +
         </ion-fab-button>
-        <ion-fab-button style="position:absolute; left: -150px; top: -50px;" (click) = "zoomOut()">
+        <ion-fab-button style="position:absolute; left: -150px; top: -50px;" (click)="zoomOut()">
             -
         </ion-fab-button>
 
-        <ion-fab-button id="fabStar" routerLink = "/favorites">
-          <img [src]=iconStar/>
+        <ion-fab-button id="fabStar" routerLink="/favorites">
+            <img [src]=iconStar/>
         </ion-fab-button>
     </ion-fab>
 

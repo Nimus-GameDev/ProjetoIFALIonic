@@ -1,5 +1,6 @@
-import { DrawMapService } from './../draw-map.service';
-import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+
+import { DrawMapService } from '../services/draw-map.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,6 @@ export class HomePage {
   public iconStar = '../../assets/images/bntStar.png';
 
   @ViewChild('myCanvas', {static: false}) canvasElement: ElementRef;
-
   constructor(private drawMap: DrawMapService) {}
 
   // tslint:disable-next-line: use-lifecycle-interface
