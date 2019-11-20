@@ -7,16 +7,27 @@ export class AreasControllerService {
 
   private areas = [
     {
+      id: 1,
       name: 'Name',
-      description: 'Here were a description of area',
+      description: 'Add Here a description of area',
       x: Math.floor(Math.random() * 1000),
       y: Math.floor(Math.random() * 1000),
       width: Math.floor(Math.random() * 100),
       height: Math.floor(Math.random() * 100)
     },
     {
+      id: 2,
       name: 'Name2',
-      description: 'Here were a description of area',
+      description: 'Add Here a description of area',
+      x: Math.floor(Math.random() * 1000),
+      y: Math.floor(Math.random() * 1000),
+      width: Math.floor(Math.random() * 100),
+      height: Math.floor(Math.random() * 100)
+    },
+    {
+      id: 3,
+      name: 'Name3',
+      description: 'Add Here a description of area',
       x: Math.floor(Math.random() * 1000),
       y: Math.floor(Math.random() * 1000),
       width: Math.floor(Math.random() * 100),

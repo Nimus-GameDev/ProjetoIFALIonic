@@ -8,6 +8,9 @@ import { AreasControllerService } from '../../services/areas-controller.service'
 })
 export class FavoritesPage implements OnInit {
 
+  public edit: boolean = false;
+  public editID: number = undefined;
+
   constructor(private areasCtrl: AreasControllerService) { }
 
   ngOnInit() {
@@ -19,6 +22,21 @@ export class FavoritesPage implements OnInit {
 
   remove(area: any) {
     this.areasCtrl.removeArea(area);
+  }
+
+  editArea(area: any) {
+    this.edit = true;
+
+    this.editID = area.id;
+
+  }
+
+  salvarDados(area: any) {
+
+  }
+
+  cancelar() {
+    this.edit = false;
   }
 
 }

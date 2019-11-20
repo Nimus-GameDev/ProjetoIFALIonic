@@ -1,20 +1,21 @@
 <ion-header>
     <ion-toolbar>
         <ion-back-button slot="start"></ion-back-button>
-        <ion-title>favorites</ion-title>
+        <ion-title>Favorites</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <!-- Informacoes das Areas -->
     <ion-card *ngFor="let area of getAreas()">
 
-        <ion-item>
+        <!-- Informacoes Atuais -->
+        <ion-item *ngIf="!edit || area.id != editID">
             <ion-card-title>
                 {{area.name}}
             </ion-card-title>
 
-            <ion-button fill="outline" slot="end">
+            <ion-button fill="outline" slot="end" (click)="editArea(area)">
                 <ion-icon name="create"></ion-icon>
             </ion-button>
 
@@ -23,8 +24,62 @@
             </ion-button>
         </ion-item>
 
-        <ion-card-content>
-            {{area.description}}
+        <ion-card-content *ngIf="!edit || area.id != editID">
+            <ion-text>
+                {{area.description}}
+            </ion-text>
+            <br>
+            <ion-text>x: {{area.x}} | y: {{area.y}}</ion-text>
+        </ion-card-content>
+
+        <!-- Informacoes em modo de Edicao -->
+        <ion-item *ngIf=" edit && area.id == editID">
+            <ion-card-title>
+                Edit: {{ area.name}}
+            </ion-card-title>
+        </ion-item>
+
+        <ion-card-content *ngIf="edit && area.id == editID">
+            <!--Name-->
+            <ion-item>
+                <ion-label position="stacked">Name
+                    <ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-input maxlength="50" value="{{area.name}}" placeholder="Add here the name of area (50 caracters)"></ion-input>
+            </ion-item>
+            <!--Description-->
+            <ion-item>
+                <ion-label position="stacked">Description
+                    <ion-text color="danger">*</ion-text>
+                </ion-label>
+                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Add Here a description of area. (300 caracters)">
+                </ion-textarea>
+            </ion-item>
+
+            <!--X and Y-->
+            <ion-item>
+                <ion-label>x: </ion-label>
+                <ion-input disabled value="{{area.x}}" color="primary"></ion-input>
+                <ion-label>y: </ion-label>
+                <ion-input disabled value="{{area.y}}" color="primary"></ion-input>
+            </ion-item>
+
+            <!--Width and Height-->
+            <ion-item>
+                <ion-label>width: </ion-label>
+                <ion-input disabled value="{{area.width}}"></ion-input>
+                <ion-label>height: </ion-label>
+                <ion-input disabled value="{{area.height}}"></ion-input>
+            </ion-item>
+
+            <ion-button expand="block" mode="ios" size="small" slot="start" (click)="salvarDados(area)">
+                Confirm
+            </ion-button>
+
+            <ion-button expand="block" mode="ios" size="small" slot="end" (click)="cancelar()">
+                Cancel
+            </ion-button>
+
         </ion-card-content>
 
     </ion-card>
