@@ -26,9 +26,11 @@ div.register {
     transform: translateY(15%);
     /*dimensions*/
     width: 80%;
-    min-width: 200px;
+    min-width: 300px;
+    max-width: 700px;
     height: 70%;
-    min-height: 200px;
+    min-height: 400px;
+    max-height: 600px;
     margin: 0 auto;
     padding: 0px;
     display: flex;
@@ -40,6 +42,16 @@ div.register {
         ion-item {
             padding: 0;
             margin: 0 auto;
+            margin-top: 10px;
+        }
+        ion-item#title {
+            margin-top: 0;
+        }
+        ion-card-content.content {
+            ion-item#login {}
+            ion-item#description {
+                margin-bottom: 15%;
+            }
         }
     }
 }

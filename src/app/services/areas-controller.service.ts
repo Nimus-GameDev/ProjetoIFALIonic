@@ -49,4 +49,8 @@ export class AreasControllerService {
     this.areas.splice(this.areas.indexOf(area), 1);
 
   }
+
+  addArea(area: any) {
+    this.areas.push(area);
+  }
 }

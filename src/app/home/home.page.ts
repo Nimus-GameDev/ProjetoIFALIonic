@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { DrawMapService } from '../services/draw-map.service';
+import { AreasControllerService } from '../services/areas-controller.service';
 
 @Component({
   selector: 'app-home',
@@ -22,11 +23,14 @@ export class HomePage {
 
   public registerArea: boolean = true;
 
+  public name: string;
+  public description: string;
+
   
   //public iconStarActived = '../../assets/images/bntStarActived.png';
 
   @ViewChild('myCanvas', undefined) canvasElement: any;
-  constructor(private drawMap: DrawMapService) {
+  constructor(private drawMap: DrawMapService, private areasCtrl: AreasControllerService) {
     this.iconStar = this.iconStarDefault;
     this.iconSquare = this.iconSquareDefault;
   }
@@ -66,7 +70,20 @@ export class HomePage {
     console.log('onDrawSquare - Actived? = ', this.drawSquareActived);
   }
 
-  saveData() {
+  cancel() {
+    this.registerArea = false;
+  }
+
+  addArea() {
+    this.areasCtrl.addArea({
+      id: this.areasCtrl.getAreas.length + 1,
+      name: this.name,
+      description: this.description,
+      x: Math.floor(Math.random() * 1000),
+      y: Math.floor(Math.random() * 1000),
+      width: Math.floor(Math.random() * 100),
+      height: Math.floor(Math.random() * 100)
+    });
     this.registerArea = false;
   }
 
