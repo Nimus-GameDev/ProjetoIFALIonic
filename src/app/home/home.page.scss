@@ -10,3 +10,36 @@ ion-fab.fabs {
         right: 5%;
     }
 }
+
+div.register {
+    /*positions*/
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    /*settings*/
+    background: #FFF;
+    /*
+    border: 1px solid red;
+    border-radius: 10px;*/
+    transform: translateY(15%);
+    /*dimensions*/
+    width: 80%;
+    min-width: 200px;
+    height: 70%;
+    min-height: 200px;
+    margin: 0 auto;
+    padding: 0px;
+    display: flex;
+    ion-card {
+        width: 100%;
+        padding: 0px;
+        margin: 0 auto;
+        border-radius: 10px;
+        ion-item {
+            padding: 0;
+            margin: 0 auto;
+        }
+    }
+}

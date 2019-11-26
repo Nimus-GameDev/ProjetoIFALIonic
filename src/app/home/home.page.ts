@@ -20,6 +20,8 @@ export class HomePage {
   public iconSquare;
   public iconStar;
 
+  public registerArea: boolean = true;
+
   
   //public iconStarActived = '../../assets/images/bntStarActived.png';
 
@@ -62,6 +64,10 @@ export class HomePage {
     this.iconSquare = this.drawSquareActived ? this.iconSquareActived : this.iconSquareDefault;
 
     console.log('onDrawSquare - Actived? = ', this.drawSquareActived);
+  }
+
+  saveData() {
+    this.registerArea = false;
   }
 
 }

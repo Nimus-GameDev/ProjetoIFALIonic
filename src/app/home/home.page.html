@@ -15,10 +15,50 @@
 <ion-content>
 
     <canvas #myCanvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)">
-        <!-- (mousedown)="onDown($event)" (mouseup)="onUp($event)" (mousemove)="onMove($event)"-->
     </canvas>
 
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fabs">
+    <!-- Tela de Cadastro -->
+    <div *ngIf="registerArea" class="register">
+
+        <ion-card>
+            <ion-item color="primary">
+                <ion-card-title color="light">
+                    Register Area
+                </ion-card-title>
+            </ion-item>
+
+            <ion-card-content>
+                <!--Name-->
+                <ion-item>
+                    <ion-label position="stacked">Name
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-input maxlength="50" placeholder="Add here the name of area"></ion-input>
+                </ion-item>
+                <!--Description-->
+                <ion-item>
+                    <ion-label position="stacked">Description
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-textarea maxlenght="300" placeholder="Add Here a description of area.">
+                    </ion-textarea>
+                </ion-item>
+
+                <ion-button expand="block" mode="ios" size="small" slot="start" (click)="saveData()">
+                    Confirm
+                </ion-button>
+
+                <ion-button expand="block" mode="ios" size="small" slot="end" (click)="saveData()">
+                    Cancel
+                </ion-button>
+            </ion-card-content>
+
+
+        </ion-card>
+
+    </div>
+
+    <ion-fab *ngIf="!registerArea" vertical="bottom" horizontal="end" slot="fixed" class="fabs">
 
         <ion-fab-button id="fabSquare" (touchstart)="onDrawSquare()">
             <img [src]=iconSquare/>
