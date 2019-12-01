@@ -10,28 +10,28 @@ export class AreasControllerService {
       id: 1,
       name: 'Name',
       description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 1000),
-      y: Math.floor(Math.random() * 1000),
-      width: Math.floor(Math.random() * 100),
-      height: Math.floor(Math.random() * 100)
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100),
+      width: Math.floor(Math.random() * 10),
+      height: Math.floor(Math.random() * 10)
     },
     {
       id: 2,
       name: 'Name2',
       description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 1000),
-      y: Math.floor(Math.random() * 1000),
-      width: Math.floor(Math.random() * 100),
-      height: Math.floor(Math.random() * 100)
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100),
+      width: Math.floor(Math.random() * 10),
+      height: Math.floor(Math.random() * 10)
     },
     {
       id: 3,
       name: 'Name3',
       description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 1000),
-      y: Math.floor(Math.random() * 1000),
-      width: Math.floor(Math.random() * 100),
-      height: Math.floor(Math.random() * 100)
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100),
+      width: Math.floor(Math.random() * 10),
+      height: Math.floor(Math.random() * 10)
     }
   ]
 

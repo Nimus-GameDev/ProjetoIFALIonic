@@ -1,7 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
-import { DrawMapService } from '../services/draw-map.service';
 import { AreasControllerService } from '../services/areas-controller.service';
+import { DrawAreaService } from '../services/draw-area.service';
+import { DrawMapService } from '../services/draw-map.service';
 
 @Component({
   selector: 'app-home',
@@ -16,39 +18,50 @@ export class HomePage {
 
   private iconSquareActived = '../../assets/images/bntSquareActived.png';
 
-  public drawSquareActived: boolean = false;
+  public drawAreaActived: boolean = false;
 
   public iconSquare;
   public iconStar;
 
-  public registerArea: boolean = true;
+  public registerArea: boolean = false;
 
   public name: string;
   public description: string;
 
-  
-  //public iconStarActived = '../../assets/images/bntStarActived.png';
-
-  @ViewChild('myCanvas', undefined) canvasElement: any;
-  constructor(private drawMap: DrawMapService, private areasCtrl: AreasControllerService) {
+  constructor(private drawMap: DrawMapService,
+              private areasCtrl: AreasControllerService,
+              private drawArea: DrawAreaService) {
     this.iconStar = this.iconStarDefault;
     this.iconSquare = this.iconSquareDefault;
   }
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
-    this.drawMap.initDraw(this.canvasElement);
   }
 
   onDown(event) {
-    this.drawMap.touchDown(event);
+    if ( !this.drawAreaActived ) {
+      this.drawMap.touchDown(event);
+    } else {
+      this.drawArea.touchDown(event);
+    }
   }
   onUp(event) {
-    this.drawMap.touchUp(event);
+    if ( !this.drawAreaActived ) {
+      this.drawMap.touchUp(event);
+    } else {
+      this.drawArea.touchUp(event);
+      this.drawAreaActived = !this.drawAreaActived;
+      this.changeIcon();
+    }
   }
 
   onMove(event) {
-    this.drawMap.touchMove(event);
+    if ( !this.drawAreaActived ) {
+      this.drawMap.touchMove(event);
+    } else {
+      this.drawArea.touchMove(event);
+    }
   }
 
   onReset() {
@@ -64,10 +77,14 @@ export class HomePage {
   }
 
   onDrawSquare() {
-    this.drawSquareActived = !this.drawSquareActived;
-    this.iconSquare = this.drawSquareActived ? this.iconSquareActived : this.iconSquareDefault;
+    this.drawAreaActived = !this.drawAreaActived;
+    this.changeIcon();
 
-    console.log('onDrawSquare - Actived? = ', this.drawSquareActived);
+    console.log('onDrawSquare - Actived? = ', this.drawAreaActived);
+  }
+
+  changeIcon() {
+    this.iconSquare = this.drawAreaActived ? this.iconSquareActived : this.iconSquareDefault;
   }
 
   cancel() {

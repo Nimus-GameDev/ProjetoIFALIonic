@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AreasControllerService } from './areas-controller.service';
 
 
 @Injectable({
@@ -28,50 +29,37 @@ export class DrawMapService {
   touchIsPressed = false;
   mapSensitivity = 2;
 
-  constructor() {}
+  constructor(private areasCtrl: AreasControllerService) {}
 
-  initDraw(canvasElement: any) {
+  initDraw(canvas: any) {
 
-    this.canvas = canvasElement.nativeElement;
+    this.canvas = canvas;
 
     console.log(this.canvas);
     // Init Position x and y
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
 
-    // Canvas Configurations
-    this.canvas.style.width = '100%';
-    this.canvas.style.height = '100%';
-
-    this.canvas.style.backgroundColor = 'white';
+    this.canvas.style.backgroundColor = 'red';
 
     // Context2d in Canvas
     this.contexto2D = this.canvas.getContext('2d');
 
-    console.log(canvasElement);
+    console.log(canvas);
     this.draw(this.x, this.y);
   }
 
   // Draw Elements
   draw(x: number, y: number) {
-    //console.log('width: ' + this.canvas.width + ' height: ' + this.canvas.height );
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //this.contexto2D.
 
-    this.contexto2D.strokeRect(x + this.scale, y + this.scale, 300 / this.scale, 20 / this.scale);
-    this.contexto2D.strokeRect(x + this.scale, y + this.scale, 100 / this.scale, 50 / this.scale);
-    /*
-    this.contexto2D.strokeRect( (x + 100) / this.scale, y / this.scale, 100 / this.scale, 50 / this.scale);
-    this.contexto2D.strokeRect( ( x + 200) / this.scale, y / this.scale, 100 / this.scale, 50 / this.scale);
-    this.contexto2D.strokeRect( (x + 20) / this.scale, (y + 50) / this.scale, 300 / this.scale, 20 / this.scale); */
-    /*
-    for (let i = 0; i < 2; i++) {
-      this.contexto2D.strokeRect(x - i * 2, y + i * 2, 300, 20);
-      this.contexto2D.strokeRect(x - i * 2, y + i * 2, 100, 50);
-      this.contexto2D.strokeRect(x + 100 - i * 2, y + i * 2, 100, 50);
-      this.contexto2D.strokeRect(x + 200 - i * 2, y + i * 2, 100, 50);
-      this.contexto2D.strokeRect(x + 20 - i * 2, y + 50 + i * 2, 300, 20);
-    } */
+    for (let y1 = 0; y1 < 4; y1++) {
+        for ( let x1 = 0; x1 < 250; x1++) {
+          this.contexto2D.strokeRect(x + (x1 * 10), y + (y1 * 10), 10 / this.scale, 10 / this.scale);
+        }
+    }
+
+    this.drawAreas(x, y, this.scale);
   }
 
   touchDown(event) {
@@ -176,18 +164,26 @@ export class DrawMapService {
     this.touchPosition.xUpdated = this.x;
     this.touchPosition.yUpdated = this.y;
 
+    this.scale = 1;
+
     this.draw(this.x, this.y);
   }
 
   zoomIn() {
-    this.scale -= 0.05;
-
+    this.scale -= this.scale > 0.5 ? 0.05 : 0;
+    console.log('scale= ' + this.scale);
     this.draw(this.x, this.y);
   }
 
   zoomOut() {
-    this.scale += 0.05;
+    this.scale += this.scale < 2 ? 0.05 : 0;
+    console.log('scale= ' + this.scale);
     this.draw(this.x, this.y);
+  }
+
+  drawAreas(x, y, scale) {
+    //this.areasCtrl.getAreas.forEach( (area) => {}
+    return undefined;
   }
 
 }

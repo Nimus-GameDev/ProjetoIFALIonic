@@ -14,8 +14,7 @@
 
 <ion-content>
 
-    <canvas #myCanvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)">
-    </canvas>
+    <draw-canvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)"></draw-canvas>
 
     <!-- Tela de Cadastro -->
     <div *ngIf="registerArea" class="register">
@@ -77,10 +76,3 @@
     </ion-fab>
 
 </ion-content>
-
-<!--
-<ion-menu contentId="menu">
-
-</ion-menu>
-
-<ion-router-outlet id="menu"></ion-router-outlet> -->
