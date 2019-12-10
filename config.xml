@@ -1,8 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MyApp</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <name>Slamduíno</name>
+    <description>Slamduíno é um aplicativo que se comunicará com o servidor, 
+        buscará as informações e transformará em um mapa acessível para o usuário.
+        O usuário poderá: marcar áreas, editar, explorar mapas entre outras funcionalidades.
+    </description>
+    <author email="damato578@gmail.com" href="#">Mikhael D'Amato</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

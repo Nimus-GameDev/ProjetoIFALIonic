@@ -61,3 +61,10 @@ div.register {
         }
     }
 }
+
+
+/*desabilita o scroll*/
+
+ion-content {
+    --overflow: hidden;
+}

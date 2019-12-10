@@ -50,7 +50,20 @@ export class AreasControllerService {
 
   }
 
-  addArea(area: any) {
+  addArea( 
+    id: number, name: string, description: string,
+    initX: number, initY: number, endX: number, endY: number ) {
+
+    const area = {
+      id,
+      name,
+      description,
+      x: initX < endX ? initX : endX,
+      y: initY < endY ? initY : endY,
+      width: endX > initX ? endX - initX : initX - endX,
+      height: endY > initY ? endX - initX : initX - endX
+    };
+
     this.areas.push(area);
   }
 }

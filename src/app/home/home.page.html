@@ -12,9 +12,9 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content [scrollEvents]="false" (fullscreen)="true">
 
-    <draw-canvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)"></draw-canvas>
+    <draw-canvas (touchstart)="onDown($event)" (touchend)="onUp($event)" (touchmove)="onMove($event)" (pinchstart)="pinchStart($event)" (pinchend)="pinchEnd($event)" (pinchMove)="pinchMove($event)"></draw-canvas>
 
     <!-- Tela de Cadastro -->
     <div *ngIf="registerArea" class="register">
@@ -62,14 +62,6 @@
         <ion-fab-button id="fabSquare" (touchstart)="onDrawSquare()">
             <img [src]=iconSquare/>
         </ion-fab-button>
-
-        <ion-fab-button style="position: absolute; left: -230px; top: -50px" (click)="zoomIn()">
-            +
-        </ion-fab-button>
-        <ion-fab-button style="position:absolute; left: -150px; top: -50px;" (click)="zoomOut()">
-            -
-        </ion-fab-button>
-
         <ion-fab-button id="fabStar" routerLink="/favorites">
             <img [src]=iconStar/>
         </ion-fab-button>

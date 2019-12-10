@@ -13,7 +13,6 @@ export class DrawCanvasComponent implements OnInit {
   @ViewChild('myCanvas', undefined) canvas: any;
 
   private canvasElement: any;
-
   private context2D: any;
 
   constructor(
@@ -34,10 +33,12 @@ export class DrawCanvasComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.drawMap.initDraw(this.canvasElement);
+    //this.drawArea.initDraw(this.canvasElement);
   }
 
   //Reajusta o canvas para as dimensoes da tela
-  click() {
+  click(event) {
+    console.log(event);
     this.renderer.setAttribute(this.canvasElement, 'width', this.platform.width() + ' ');
     this.renderer.setAttribute(this.canvasElement, 'height', this.platform.height() + ' ' );
     this.renderer.setAttribute(this.canvasElement, 'background', 'red');
