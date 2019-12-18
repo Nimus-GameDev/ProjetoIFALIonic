@@ -1,10 +1,10 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
-import { Platform, ToastController } from '@ionic/angular';
+import { Component } from '@angular/core';
 
-import { AreasControllerService } from '../services/areas-controller.service';
+import { AppConfig } from '../classes/config/app-config';
 import { DrawAreaService } from '../services/draw-area.service';
 import { DrawMapService } from '../services/draw-map.service';
 import { MapControllerService } from '../services/map-controller.service';
+import { MapConfig } from '../classes/config/map-config';
 
 @Component({
   selector: 'app-home',
@@ -13,13 +13,10 @@ import { MapControllerService } from '../services/map-controller.service';
 })
 export class HomePage {
 
-  private iconSquareDefault = '../../assets/images/bntSquare.png';
-  private iconStarDefault = '../../assets/images/bntStar.png';
-  private iconSquareActived = '../../assets/images/bntSquareActived.png';
   private iconSquare;
   private iconStar;
-  private drawAreaActived: boolean = true;
-  private registerArea: boolean = false;
+  private drawAreaActived = false;
+  private registerArea = false;
   private name: string;
   private description: string;
 
@@ -27,8 +24,6 @@ export class HomePage {
     start: 0,
     end: 0
   };
-
-  private zoomSensibility = 0.005;
 
   private scales = {
     scale: 0,
@@ -40,12 +35,10 @@ export class HomePage {
   contador = 1;
 
   constructor(private drawMap: DrawMapService,
-              private areasCtrl: AreasControllerService,
               private drawArea: DrawAreaService,
-              private mapCtrl: MapControllerService,
-              private toast: ToastController) {
-    this.iconStar = this.iconStarDefault;
-    this.iconSquare = this.iconSquareDefault;
+              private mapCtrl: MapControllerService) {
+    this.iconStar = AppConfig.imgBntStar;
+    this.iconSquare = AppConfig.imgBntSquareDefault;
   }
 
   // tslint:disable-next-line: use-lifecycle-interface
@@ -113,7 +106,7 @@ export class HomePage {
       console.log('Scale1: ' + this.scales.scale1);
       this.scales.scale2 = event.scale;
       console.log('Scale2: ' + this.scales.scale2);
-      //this.contador--;
+      // this.contador--;
     }
 
 
@@ -126,31 +119,27 @@ export class HomePage {
   }
 
   zoomOut() {
-    this.scales.scale -= this.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
+    this.scales.scale -= MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
     console.log('out ' +  ( this.pinchScale.end - this.pinchScale.start ) );
-    this.mapCtrl.setScale(this.scales.scale);
-  }
-
-  zoomUpdate() {
-
+    this.updateScale();
   }
 
   zoomIn() {
-    this.scales.scale += this.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
+    this.scales.scale +=  MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
     console.log('in ' +  (this.pinchScale.end - this.pinchScale.start) );
-    this.mapCtrl.setScale(this.scales.scale);
+    this.updateScale();
+  }
+
+  updateScale() {
+    MapConfig.scale = this.scales.scale;
   }
   // desenho de Area
 
   onDrawSquare() {
     this.drawAreaActived = !this.drawAreaActived;
-    this.changeIcon();
+    this.iconSquare = this.drawAreaActived ? AppConfig.imgBntSquareActived : AppConfig.imgBntSquareDefault;
 
     console.log('onDrawSquare - Actived? = ', this.drawAreaActived);
-  }
-
-  changeIcon() {
-    this.iconSquare = this.drawAreaActived ? this.iconSquareActived : this.iconSquareDefault;
   }
 
   cancel() {
@@ -161,6 +150,12 @@ export class HomePage {
     this.drawArea.addArea(this.name, this.description);
 
     this.registerArea = false;
+  }
+
+  printScale() {
+    console.log(MapConfig.scale);
+    MapConfig.scale -= 0.05;
+    this.drawMap.updateDraw();
   }
 
 }

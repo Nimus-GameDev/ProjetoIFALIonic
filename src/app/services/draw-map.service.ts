@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AreasControllerService } from './areas-controller.service';
 import { MapControllerService } from './map-controller.service';
+import { MapConfig } from '../classes/config/map-config';
 
 
 @Injectable({
@@ -59,7 +60,7 @@ export class DrawMapService {
   // Draw Elements
   draw(x: number, y: number) {
 
-    const scale: number = this.mapCtrl.getScale;
+    const scale: number = MapConfig.scale;
 
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -163,18 +164,9 @@ export class DrawMapService {
     this.touchPosition.xUpdated = this.x;
     this.touchPosition.yUpdated = this.y;
 
-    this.mapCtrl.setScale(1);
+    MapConfig.scale = 1;
 
     this.draw(this.x, this.y);
-  }
-
-  zoomIn() {
-    let scale = this.mapCtrl.getScale;
-  }
-
-  zoomOut() {
-    let scale = this.mapCtrl.getScale;
-
   }
 
 }
