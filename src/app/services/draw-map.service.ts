@@ -12,27 +12,28 @@ export class DrawMapService {
   private canvas: any;
   private contexto2D: any;
 
-  x: number;
-  y: number;
+  x: number = 0;
+  y: number = 0;
+
+  deslX: number = 0;
+  deslY: number = 0;
 
   touchPosition: any = {
     initialX: 0,
     initialY: 0,
     finalX: 0,
     finalY: 0,
-    xUpdated: this.x,
-    yUpdated: this.y
+    xUpdated: this.deslX,
+    yUpdated: this.deslY
   };
-
-  //Variaveis para zoom
 
   touchIsPressed = false;
   mapSensitivity = 5;
 
-  width = 20;
-  height = 20;
+  pixelMapWidth = 5;
+  pixelMapHeight = 5;
 
-  constructor( private mapCtrl: MapControllerService) {}
+  constructor( private mapCtrl: MapControllerService, private areasCtrl: AreasControllerService) {}
 
   initDraw(canvas: any) {
 
@@ -42,45 +43,85 @@ export class DrawMapService {
     // Init Position x and y
     this.x = this.canvas.width / 2;
     this.y = this.canvas.height / 2;
-  
 
-    this.canvas.style.backgroundColor = 'red';
+    this.canvas.style.backgroundColor = 'white';
 
     // Context2d in Canvas
     this.contexto2D = this.canvas.getContext('2d');
 
     console.log(canvas);
-    this.draw(this.x, this.y);
+    this.draw(this.deslX, this.deslY);
   }
 
 
   updateDraw() {
-    this.draw(this.x, this.y);
+    this.draw(this.deslX, this.deslY);
   }
   // Draw Elements
-  draw(x: number, y: number) {
+  draw(deslX: number, deslY: number) {
 
     const scale: number = MapConfig.scale;
 
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    for (let y1 = 0; y1 < 10; y1++) {
-        for ( let x1 = 0; x1 < 20; x1++) {
+    let map = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+
+    for (let pixelH = 0; pixelH < map.length; pixelH++) {
+        for ( let pixelW = 0; pixelW < map[pixelH].length; pixelW++) {
           // tslint:disable-next-line: max-line-length
-          if ( !( (x1 >= 1 && x1 < 4) ) ) {
+          if ( map[pixelH][pixelW]  !== 0) {
             this.contexto2D.strokeRect(
-            Math.round( x + ( x1 * (this.width * scale ) ) ),
-            Math.round( y +  ( y1 * (this.width * scale) ) ), this.height * scale, this.height * scale);
+            Math.round( this.x + deslX + ( pixelW * (this.pixelMapWidth * scale ) ) ),
+            Math.round( this.y + deslY +  ( pixelH * (this.pixelMapHeight * scale) ) ),
+            this.pixelMapWidth * scale, this.pixelMapHeight * scale);
           }
         }
     }
+
+
+    this.areasCtrl.getAreas.forEach( (area) => {
+      this.contexto2D.strokeStyle = 'red';
+      this.contexto2D.strokeRect(
+        deslX + area.x,
+        deslY + area.y,
+        area.width * scale,
+        area.height * scale
+       );
+    });
+    this.contexto2D.strokeStyle = 'black';
+
+    /*
+    let area = this.areasCtrl.getAreas[this.areasCtrl.getAreas.length - 1];
+
+    this.contexto2D.strokeRect(
+      deslX  + area.x,
+      deslY + area.y,
+      area.width * scale,
+      area.height * scale
+     ); */
+
+    this.contexto2D.strokeStyle = 'black';
+
   }
 
   touchDown(event) {
     console.log('Alert - touchDown actived.');
-
-    // console.log(this.countDown);
-    // console.log('Duplo Click Ativado? = ' + this.duploClick);
 
     // Get Position X and Y of Touch
     const clientX = event.changedTouches['0'].clientX;
@@ -89,8 +130,8 @@ export class DrawMapService {
     // console.log('touchX= ' + clientX + ' touchY= ' + clientY);
 
     // Update the positions X and Y
-    this.touchPosition.xUpdated = this.x;
-    this.touchPosition.yUpdated = this.y;
+    this.touchPosition.xUpdated = this.deslX;
+    this.touchPosition.yUpdated = this.deslY;
 
     // Get initial position of touch
     this.touchPosition.initialX = clientX;
@@ -116,11 +157,11 @@ export class DrawMapService {
 
 
     if ( !(positionIsEqual)) {
-      this.x += (this.touchPosition.finalX - this.touchPosition.initialX) / this.mapSensitivity;
-      this.y += (this.touchPosition.finalY - this.touchPosition.initialY) / this.mapSensitivity;
+      this.deslX += (this.touchPosition.finalX - this.touchPosition.initialX) / this.mapSensitivity;
+      this.deslY += (this.touchPosition.finalY - this.touchPosition.initialY) / this.mapSensitivity;
     }
 
-    this.draw(this.x, this.y);
+    this.draw(this.deslX, this.deslY);
     this.touchIsPressed = false;
   }
 
@@ -138,8 +179,8 @@ export class DrawMapService {
     const clientY = event.changedTouches['0'].clientY;
 
     // posicao = posicao do mapa + Diferenca relativa a movimentacao do mouse
-    this.touchPosition.xUpdated =  this.x + (clientX - this.touchPosition.initialX) / this.mapSensitivity;
-    this.touchPosition.yUpdated = this.y + (clientY - this.touchPosition.initialY) / this.mapSensitivity;
+    this.touchPosition.xUpdated =  this.deslX + (clientX - this.touchPosition.initialX) / this.mapSensitivity;
+    this.touchPosition.yUpdated = this.deslY + (clientY - this.touchPosition.initialY) / this.mapSensitivity;
 
     // Draw a new rectangle on movimentation relative
     if ( this.touchIsPressed) {
@@ -161,12 +202,14 @@ export class DrawMapService {
     this.touchPosition.initialY = 0;
     this.touchPosition.finalX = 0;
     this.touchPosition.finalY = 0;
-    this.touchPosition.xUpdated = this.x;
-    this.touchPosition.yUpdated = this.y;
+    this.deslX = 0;
+    this.deslY = 0;
+    this.touchPosition.xUpdated = this.deslX;
+    this.touchPosition.yUpdated = this.deslY;
 
     MapConfig.scale = 1;
 
-    this.draw(this.x, this.y);
+    this.draw(this.deslX, this.deslY);
   }
 
 }

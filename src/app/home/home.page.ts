@@ -5,6 +5,7 @@ import { DrawAreaService } from '../services/draw-area.service';
 import { DrawMapService } from '../services/draw-map.service';
 import { MapControllerService } from '../services/map-controller.service';
 import { MapConfig } from '../classes/config/map-config';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,7 @@ export class HomePage {
   };
 
   private scales = {
-    scale: 0,
+    scale: MapConfig.scale,
     scale1: 0,
     scale2: 0
   };
@@ -34,9 +35,12 @@ export class HomePage {
   isZoom = false;
   contador = 1;
 
+  countDown = 0;
+
   constructor(private drawMap: DrawMapService,
               private drawArea: DrawAreaService,
-              private mapCtrl: MapControllerService) {
+              private mapCtrl: MapControllerService,
+              private toast: ToastController) {
     this.iconStar = AppConfig.imgBntStar;
     this.iconSquare = AppConfig.imgBntSquareDefault;
   }
@@ -46,25 +50,41 @@ export class HomePage {
   }
   // movimentacao do mapa
   onDown(event) {
-    if (!this.isZoom) {
+    if (!this.isZoom && !this.drawAreaActived) {
       this.drawMap.touchDown(event);
+    } else if (this.drawAreaActived) {
+      this.drawArea.touchDown(event);
     }
   }
 
   onUp(event) {
-    if (!this.isZoom) {
+    if (!this.isZoom && !this.drawAreaActived) {
       this.drawMap.touchUp(event);
+    } else if (this.isZoom) {
+
+      if (this.countDown === 0) {
+        this.isZoom = false;
+      } else {
+        this.countDown--;
+      }
+
+      console.log('contador= ' + this.contador);
+    } else if (this.drawAreaActived) {
+      this.drawArea.touchUp(event);
+      this.registerArea = true;
     }
+
   }
 
   onMove(event) {
-    if (!this.isZoom) {
+    if (!this.isZoom && !this.drawAreaActived) {
       this.drawMap.touchMove(event);
     }
   }
 
   onReset() {
     this.drawMap.resetPosition();
+    this.scales.scale = MapConfig.scale;
   }
 
   // zoom do mapa
@@ -72,11 +92,12 @@ export class HomePage {
     this.isZoom = true;
     console.log('pinchStart');
 
+    this.countDown = 2;
     this.pinchScale.start = event.scale;
+    console.log('ScaleStart= ' + MapConfig.scale);
   }
 
   pinchEnd(event) {
-    this.isZoom = false;
     console.log('pinchEnd');
 
     this.pinchScale.end = event.scale;
@@ -87,9 +108,10 @@ export class HomePage {
       this.zoomIn();
     }
 
+    this.contador--;
     this.drawMap.updateDraw();
 
-    console.log(this.scales.scale);
+    console.log('Scale= ' + MapConfig.scale);
 
   }
 
@@ -119,7 +141,12 @@ export class HomePage {
   }
 
   zoomOut() {
-    this.scales.scale -= MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
+    if ( this.scales.scale > 0.2) {
+      this.scales.scale -= MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
+    } else if ( this.scales.scale <= 0.2) {
+      this.scales.scale = 0.2;
+    }
+
     console.log('out ' +  ( this.pinchScale.end - this.pinchScale.start ) );
     this.updateScale();
   }
@@ -128,6 +155,18 @@ export class HomePage {
     this.scales.scale +=  MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
     console.log('in ' +  (this.pinchScale.end - this.pinchScale.start) );
     this.updateScale();
+  }
+
+  zIn() {
+    console.log(MapConfig.scale);
+    MapConfig.scale += MapConfig.scale >= 3 ? 0 :  0.01;
+    this.drawMap.updateDraw();
+  }
+
+  zOut() {
+    console.log(MapConfig.scale);
+    MapConfig.scale -= MapConfig.scale <= 0.5 ? 0 :  0.01;
+    this.drawMap.updateDraw();
   }
 
   updateScale() {
@@ -144,18 +183,15 @@ export class HomePage {
 
   cancel() {
     this.registerArea = false;
+    this.name = undefined;
+    this.description = undefined;
   }
 
   addArea() {
     this.drawArea.addArea(this.name, this.description);
+    this.drawMap.updateDraw();
 
     this.registerArea = false;
-  }
-
-  printScale() {
-    console.log(MapConfig.scale);
-    MapConfig.scale -= 0.05;
-    this.drawMap.updateDraw();
   }
 
 }

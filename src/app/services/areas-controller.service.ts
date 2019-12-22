@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MapConfig } from '../classes/config/map-config';
 
 @Injectable({
   providedIn: 'root'
@@ -50,19 +51,25 @@ export class AreasControllerService {
 
   }
 
-  addArea( 
+  addArea(
     id: number, name: string, description: string,
-    initX: number, initY: number, endX: number, endY: number ) {
+    initX: number, initY: number, endX: number, endY: number, deslX: number, deslY: number) {
 
     const area = {
       id,
       name,
       description,
-      x: initX < endX ? initX : endX,
-      y: initY < endY ? initY : endY,
+      x: initX < endX ? initX - deslX : endX - deslX,
+      y: initY < endY ? initY - deslY : endY - deslY,
       width: endX > initX ? endX - initX : initX - endX,
-      height: endY > initY ? endX - initX : initX - endX
+      height: endY > initY ? endY - initY : initY - endY
     };
+
+    area.width /= MapConfig.scale;
+    area.height /= MapConfig.scale;
+
+    console.log('width: ' + area.width);
+    console.log('height: ' + area.height);
 
     this.areas.push(area);
   }

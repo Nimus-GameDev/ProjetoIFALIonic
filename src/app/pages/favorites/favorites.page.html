@@ -1,25 +1,25 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="tertiary">
         <ion-back-button slot="start"></ion-back-button>
-        <ion-title>Favorites</ion-title>
+        <ion-title style="font-weight: bold;">Minhas Áreas</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="container">
     <!-- Informacoes das Areas -->
-    <ion-card *ngFor="let area of getAreas()">
+    <ion-card *ngFor="let area of getAreas()" color="light">
 
         <!-- Informacoes Atuais -->
-        <ion-item *ngIf="!edit || area.id != editID">
+        <ion-item *ngIf="!edit || area.id != editID" color="tertiary">
             <ion-card-title>
                 {{area.name}}
             </ion-card-title>
 
-            <ion-button fill="outline" slot="end" (click)="editArea(area)">
+            <ion-button fill="outline" slot="end" (click)="editArea(area)" color="light">
                 <ion-icon name="create"></ion-icon>
             </ion-button>
 
-            <ion-button fill="outline" slot="end" (click)="remove(area)">
+            <ion-button fill="outline" slot="end" (click)="remove(area)" color="light">
                 <ion-icon name="trash"></ion-icon>
             </ion-button>
         </ion-item>
@@ -35,24 +35,24 @@
         <!-- Informacoes em modo de Edicao -->
         <ion-item *ngIf=" edit && area.id == editID">
             <ion-card-title>
-                Edit: {{ area.name}}
+                Editando: {{ area.name}}
             </ion-card-title>
         </ion-item>
 
         <ion-card-content *ngIf="edit && area.id == editID">
             <!--Name-->
             <ion-item>
-                <ion-label position="stacked">Name
+                <ion-label position="stacked">Nome
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input maxlength="50" value="{{area.name}}" placeholder="Add here the name of area (50 caracters)"></ion-input>
+                <ion-input maxlength="50" value="{{area.name}}" placeholder="Nome"></ion-input>
             </ion-item>
             <!--Description-->
             <ion-item>
-                <ion-label position="stacked">Description
+                <ion-label position="stacked">Descrição
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Add Here a description of area. (300 caracters)">
+                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Descrição">
                 </ion-textarea>
             </ion-item>
 
@@ -66,18 +66,18 @@
 
             <!--Width and Height-->
             <ion-item>
-                <ion-label>width: </ion-label>
+                <ion-label>largura: </ion-label>
                 <ion-input disabled value="{{area.width}}"></ion-input>
-                <ion-label>height: </ion-label>
+                <ion-label>altura: </ion-label>
                 <ion-input disabled value="{{area.height}}"></ion-input>
             </ion-item>
 
             <ion-button expand="block" mode="ios" size="small" slot="start" (click)="salvarDados(area)">
-                Confirm
+                Confirmar
             </ion-button>
 
             <ion-button expand="block" mode="ios" size="small" slot="end" (click)="cancelar()">
-                Cancel
+                Cancelar
             </ion-button>
 
         </ion-card-content>

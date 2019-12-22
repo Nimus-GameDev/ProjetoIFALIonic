@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AreasControllerService } from '../../services/areas-controller.service';
+import { DrawMapService } from '../../services/draw-map.service';
 
 @Component({
   selector: 'app-favorites',
@@ -11,7 +12,7 @@ export class FavoritesPage implements OnInit {
   public edit: boolean = false;
   public editID: number = undefined;
 
-  constructor(private areasCtrl: AreasControllerService) { }
+  constructor(private areasCtrl: AreasControllerService, private drawMap: DrawMapService) { }
 
   ngOnInit() {
   }
@@ -22,6 +23,7 @@ export class FavoritesPage implements OnInit {
 
   remove(area: any) {
     this.areasCtrl.removeArea(area);
+    this.drawMap.updateDraw();
   }
 
   editArea(area: any) {

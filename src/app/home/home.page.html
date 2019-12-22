@@ -1,3 +1,4 @@
+<!--
 <ion-header>
     <ion-toolbar>
         <ion-menu-button slot="start">
@@ -9,7 +10,7 @@
             <ion-icon name="refresh" color="dark"></ion-icon>
         </ion-button>
     </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 
 <ion-content [scrollEvents]="false" (fullscreen)="true">
@@ -66,8 +67,11 @@
             <img [src]=iconStar/>
         </ion-fab-button>
 
-        <ion-fab-button (click)="printScale()">
-            Zoom
+        <ion-fab-button style="position: relative; left: -280%;" (click)="zIn()">
+            In
+        </ion-fab-button>
+        <ion-fab-button style="position: relative; left: -280%;" (click)="zOut()">
+            Out
         </ion-fab-button>
     </ion-fab>
 

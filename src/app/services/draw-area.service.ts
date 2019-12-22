@@ -19,7 +19,10 @@ export class DrawAreaService {
     updateY: undefined
   };
 
-  constructor(private areasCtrl: AreasControllerService) {
+  constructor(
+    private areasCtrl: AreasControllerService,
+    private mapDraw: DrawMapService
+    ) {
   }
 
   public initDraw(canvasElement: any) {
@@ -82,7 +85,9 @@ export class DrawAreaService {
       this.touchPosition.initX,
       this.touchPosition.initY,
       this.touchPosition.endX,
-      this.touchPosition.endY
+      this.touchPosition.endY,
+      this.mapDraw.deslX,
+      this.mapDraw.deslY
     );
   }
 
