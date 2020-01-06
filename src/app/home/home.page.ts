@@ -192,6 +192,7 @@ export class HomePage {
     this.drawMap.updateDraw();
 
     this.registerArea = false;
+    this.onDrawSquare();
   }
 
 }

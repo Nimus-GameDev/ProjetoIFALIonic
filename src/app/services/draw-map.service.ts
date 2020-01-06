@@ -87,12 +87,20 @@ export class DrawMapService {
           // tslint:disable-next-line: max-line-length
           if ( map[pixelH][pixelW]  !== 0) {
             this.contexto2D.strokeRect(
-            Math.round( this.x + deslX + ( pixelW * (this.pixelMapWidth * scale ) ) ),
+            Math.round( this.x + deslX + ( pixelW * ( this.pixelMapWidth * scale ) ) ),
             Math.round( this.y + deslY +  ( pixelH * (this.pixelMapHeight * scale) ) ),
             this.pixelMapWidth * scale, this.pixelMapHeight * scale);
           }
         }
     }
+
+    this.contexto2D.strokeStyle = 'green';
+    this.contexto2D.strokeRect(
+      deslX + 180 + ( 1 * scale ),
+      deslY + 270 + ( 1 * scale ),
+      100 * scale,
+      100 * scale
+    );
 
 
     this.areasCtrl.getAreas.forEach( (area) => {
@@ -104,6 +112,18 @@ export class DrawMapService {
         area.height * scale
        );
     });
+
+    this.areasCtrl.getAreas.forEach( (area) => {
+      this.contexto2D.strokeStyle = 'blue';
+      this.contexto2D.fillRect(
+        deslX + area.x,
+        deslY + area.y,
+        area.width * scale,
+        area.height * scale
+       );
+    });
+
+
     this.contexto2D.strokeStyle = 'black';
 
     /*
