@@ -6,6 +6,7 @@ import { DrawMapService } from '../services/draw-map.service';
 import { MapControllerService } from '../services/map-controller.service';
 import { MapConfig } from '../classes/config/map-config';
 import { ToastController } from '@ionic/angular';
+import { CrudAreaService } from '../services/crud-area.service';
 
 @Component({
   selector: 'app-home',
@@ -18,12 +19,15 @@ export class HomePage {
   private iconStar;
   private drawAreaActived = false;
   private registerArea = false;
-  private name: string;
-  private description: string;
 
-  private pinchScale = {
+  pinchScale = {
     start: 0,
     end: 0
+  };
+
+  private area = {
+    name: undefined,
+    description: undefined
   };
 
   private scales = {
@@ -40,7 +44,8 @@ export class HomePage {
   constructor(private drawMap: DrawMapService,
               private drawArea: DrawAreaService,
               private mapCtrl: MapControllerService,
-              private toast: ToastController) {
+              private toast: ToastController,
+              private crudArea: CrudAreaService) {
     this.iconStar = AppConfig.imgBntStar;
     this.iconSquare = AppConfig.imgBntSquareDefault;
   }
@@ -48,6 +53,11 @@ export class HomePage {
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
   }
+
+  ngOnInit(): void {
+    
+  }
+
   // movimentacao do mapa
   onDown(event) {
     if (!this.isZoom && !this.drawAreaActived) {
@@ -183,15 +193,17 @@ export class HomePage {
 
   cancel() {
     this.registerArea = false;
-    this.name = undefined;
-    this.description = undefined;
+    this.area.name = undefined;
+    this.area.description = undefined;
   }
 
   addArea() {
-    this.drawArea.addArea(this.name, this.description);
+    this.drawArea.addArea(this.area.name, this.area.description);
     this.drawMap.updateDraw();
 
     this.registerArea = false;
+    this.area.name = undefined;
+    this.area.description = undefined;
     this.onDrawSquare();
   }
 

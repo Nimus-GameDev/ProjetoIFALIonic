@@ -7,7 +7,7 @@
 
 <ion-content class="container">
     <!-- Informacoes das Areas -->
-    <ion-card *ngFor="let area of getAreas()" color="light">
+    <ion-card *ngFor="let area of areas" color="light">
 
         <!-- Informacoes Atuais -->
         <ion-item *ngIf="!edit || area.id != editID" color="tertiary">

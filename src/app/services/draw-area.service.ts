@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DrawMapService } from './draw-map.service';
 import { AreasControllerService } from './areas-controller.service';
+import { CrudAreaService } from './crud-area.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,12 @@ export class DrawAreaService {
     updateY: undefined
   };
 
+  areas = [];
+
   constructor(
     private areasCtrl: AreasControllerService,
-    private mapDraw: DrawMapService
+    private mapDraw: DrawMapService,
+    private crudArea: CrudAreaService
     ) {
   }
 
@@ -29,14 +33,29 @@ export class DrawAreaService {
     this.canvas = canvasElement;
     this.context2d = this.canvas.getContext('2d');
 
-    this.drawAreas();
+    //this.drawAreas();
   }
 
   private drawAreas() {
-    let areas = this.areasCtrl.getAreas;
 
-    areas.forEach( (area) => {
+    this.crudArea.readAreas().subscribe(data => {
+      this.areas = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          name: e.payload.doc.data()['name'],
+          description: e.payload.doc.data()['description'],
+          x: e.payload.doc.data()['x'],
+          y: e.payload.doc.data()['y'],
+          width: e.payload.doc.data()['width'],
+          height: e.payload.doc.data()['height']
+        };
+      });
+      console.log(this.areas);
+    });
+
+    this.areas.forEach( (area) => {
       this.context2d.fillRect(area.x, area.y, area.width, area.height);
+      console.log('area: ' + area);
     } );
 
   }
@@ -79,7 +98,6 @@ export class DrawAreaService {
 
   public addArea(name: string, description: string) {
     this.areasCtrl.addArea(
-      this.areasCtrl.getAreas.length + 1,
       name,
       description,
       this.touchPosition.initX,

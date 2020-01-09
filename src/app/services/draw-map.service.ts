@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AreasControllerService } from './areas-controller.service';
 import { MapControllerService } from './map-controller.service';
 import { MapConfig } from '../classes/config/map-config';
+import { CrudAreaService } from './crud-area.service';
 
 
 @Injectable({
@@ -33,7 +34,26 @@ export class DrawMapService {
   pixelMapWidth = 5;
   pixelMapHeight = 5;
 
-  constructor( private mapCtrl: MapControllerService, private areasCtrl: AreasControllerService) {}
+  areas = [];
+
+  constructor( private crudArea: CrudAreaService, private areasCtrl: AreasControllerService) {}
+
+  ngOnInit(): void {
+    
+    this.crudArea.readAreas().subscribe(data => {
+      this.areas = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          name: e.payload.doc.data()['name'],
+          description: e.payload.doc.data()['description'],
+          x: e.payload.doc.data()['x'],
+          y: e.payload.doc.data()['y'],
+          width: e.payload.doc.data()['width'],
+          height: e.payload.doc.data()['height']
+        };
+      });
+    });
+  }
 
   initDraw(canvas: any) {
 
@@ -94,16 +114,17 @@ export class DrawMapService {
         }
     }
 
+    /*
     this.contexto2D.strokeStyle = 'green';
     this.contexto2D.strokeRect(
       deslX + 180 + ( 1 * scale ),
       deslY + 270 + ( 1 * scale ),
       100 * scale,
       100 * scale
-    );
+    ); */
 
-
-    this.areasCtrl.getAreas.forEach( (area) => {
+    console.log(this.areas);
+    this.areas.forEach( (area) => {
       this.contexto2D.strokeStyle = 'red';
       this.contexto2D.strokeRect(
         deslX + area.x,
@@ -111,30 +132,8 @@ export class DrawMapService {
         area.width * scale,
         area.height * scale
        );
+      console.log(area);
     });
-
-    this.areasCtrl.getAreas.forEach( (area) => {
-      this.contexto2D.strokeStyle = 'blue';
-      this.contexto2D.fillRect(
-        deslX + area.x,
-        deslY + area.y,
-        area.width * scale,
-        area.height * scale
-       );
-    });
-
-
-    this.contexto2D.strokeStyle = 'black';
-
-    /*
-    let area = this.areasCtrl.getAreas[this.areasCtrl.getAreas.length - 1];
-
-    this.contexto2D.strokeRect(
-      deslX  + area.x,
-      deslY + area.y,
-      area.width * scale,
-      area.height * scale
-     ); */
 
     this.contexto2D.strokeStyle = 'black';
 

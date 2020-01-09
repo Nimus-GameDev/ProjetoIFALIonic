@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: 'AIzaSyAchVZ04868nGUz6KAmekrH-bsJBghyuyg',
+    authDomain: 'slamduino.firebaseapp.com',
+    databaseURL: 'https://slamduino.firebaseio.com',
+    projectId: 'slamduino',
+    storageBucket: 'slamduino.appspot.com',
+    messagingSenderId: '774345808300',
+    appId: '1:774345808300:web:01dd11e5ce5bc43cd50209',
+    measurementId: 'G-G6MWJN959J'
+  }
 };
 
 /*

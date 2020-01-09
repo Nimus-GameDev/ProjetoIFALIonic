@@ -1,62 +1,41 @@
 import { Injectable } from '@angular/core';
+
 import { MapConfig } from '../classes/config/map-config';
+import { CrudAreaService } from './crud-area.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AreasControllerService {
 
-  private areas = [
-    {
-      id: 1,
-      name: 'Name',
-      description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 100),
-      y: Math.floor(Math.random() * 100),
-      width: Math.floor(Math.random() * 10),
-      height: Math.floor(Math.random() * 10)
-    },
-    {
-      id: 2,
-      name: 'Name2',
-      description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 100),
-      y: Math.floor(Math.random() * 100),
-      width: Math.floor(Math.random() * 10),
-      height: Math.floor(Math.random() * 10)
-    },
-    {
-      id: 3,
-      name: 'Name3',
-      description: 'Add Here a description of area',
-      x: Math.floor(Math.random() * 100),
-      y: Math.floor(Math.random() * 100),
-      width: Math.floor(Math.random() * 10),
-      height: Math.floor(Math.random() * 10)
-    }
-  ]
+  areas = [];
 
-  constructor() { }
+  constructor(
+    private crudArea: CrudAreaService
+  ) { }
 
-  // tslint:disable-next-line: ban-types
-  get getAreas() {
+  ngOnInit(): void {
 
-    return this.areas;
+    this.crudArea.readAreas().subscribe(data => {
+      this.areas = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          name: e.payload.doc.data()['name'],
+          description: e.payload.doc.data()['description'],
+          x: e.payload.doc.data()['x'],
+          y: e.payload.doc.data()['y'],
+          width: e.payload.doc.data()['width'],
+          height: e.payload.doc.data()['height']
+        };
+      });
+    });
 
   }
 
-  removeArea(area: any) {
-
-    this.areas.splice(this.areas.indexOf(area), 1);
-
-  }
-
-  addArea(
-    id: number, name: string, description: string,
+  addArea(name: string, description: string,
     initX: number, initY: number, endX: number, endY: number, deslX: number, deslY: number) {
 
     const area = {
-      id,
       name,
       description,
       x: initX < endX ? initX - deslX : endX - deslX,
@@ -71,6 +50,17 @@ export class AreasControllerService {
     console.log('width: ' + area.width);
     console.log('height: ' + area.height);
 
-    this.areas.push(area);
+    return this.crudArea.createArea(area).then((resp) => {
+      console.log(resp);
+    }).catch(error => {
+      console.log(error);
+    });
   }
+
+    // tslint:disable-next-line: ban-types
+    get getAreas() {
+      return this.areas;
+    }
+
+
 }

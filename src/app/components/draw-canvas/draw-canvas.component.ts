@@ -30,6 +30,7 @@ export class DrawCanvasComponent implements OnInit {
     this.renderer.setAttribute(this.canvasElement, 'height', this.platform.height() + ' ' );
     this.renderer.setAttribute(this.canvasElement, 'background', 'red');
     this.drawMap.initDraw(this.canvasElement);
+    //this.drawArea.initDraw(this.canvasElement);
   }
 
   //Reajusta o canvas para as dimensoes da tela
