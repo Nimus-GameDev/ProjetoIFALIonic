@@ -28,7 +28,9 @@ export class AreasControllerService {
           height: e.payload.doc.data()['height']
         };
       });
+      console.log(this.areas);
     });
+
 
   }
 

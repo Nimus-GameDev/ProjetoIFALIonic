@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { AreasControllerService } from './areas-controller.service';
 import { MapControllerService } from './map-controller.service';
 import { MapConfig } from '../classes/config/map-config';
 import { CrudAreaService } from './crud-area.service';
+import { resolve } from 'url';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class DrawMapService {
+export class DrawMapService implements OnInit{
 
   private canvas: any;
   private contexto2D: any;
@@ -36,10 +37,7 @@ export class DrawMapService {
 
   areas = [];
 
-  constructor( private crudArea: CrudAreaService, private areasCtrl: AreasControllerService) {}
-
-  ngOnInit(): void {
-    
+  constructor( private crudArea: CrudAreaService, private areasCtrl: AreasControllerService) {
     this.crudArea.readAreas().subscribe(data => {
       this.areas = data.map(e => {
         return {
@@ -52,17 +50,25 @@ export class DrawMapService {
           height: e.payload.doc.data()['height']
         };
       });
+      this.updateDraw();
     });
   }
 
-  initDraw(canvas: any) {
+  ngOnInit(): void {
+  }
+
+  getAreas() {
+ 
+  }
+
+  async initDraw(canvas: any) {
 
     this.canvas = canvas;
 
     console.log(this.canvas);
     // Init Position x and y
-    this.x = this.canvas.width / 2;
-    this.y = this.canvas.height / 2;
+    this.deslX = this.canvas.width / 2;
+    this.deslY = this.canvas.height / 2;
 
     this.canvas.style.backgroundColor = 'white';
 
@@ -114,16 +120,14 @@ export class DrawMapService {
         }
     }
 
-    /*
     this.contexto2D.strokeStyle = 'green';
     this.contexto2D.strokeRect(
-      deslX + 180 + ( 1 * scale ),
-      deslY + 270 + ( 1 * scale ),
+      deslX + 10 + ( 1 * scale ),
+      deslY + 20 + ( 1 * scale ),
       100 * scale,
       100 * scale
-    ); */
+    );
 
-    console.log(this.areas);
     this.areas.forEach( (area) => {
       this.contexto2D.strokeStyle = 'red';
       this.contexto2D.strokeRect(

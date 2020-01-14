@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { DrawMapService } from '../../services/draw-map.service';
 import { DrawAreaService } from '../../services/draw-area.service';
+import { CrudAreaService } from '../../services/crud-area.service';
 
 @Component({
   selector: 'draw-canvas',
@@ -14,6 +15,7 @@ export class DrawCanvasComponent implements OnInit {
 
   private canvasElement: any;
   private context2D: any;
+  areas = [];
 
   constructor(
     public platform: Platform,
@@ -22,6 +24,7 @@ export class DrawCanvasComponent implements OnInit {
     private drawArea: DrawAreaService) { }
 
   ngOnInit() {
+
     this.canvasElement = this.canvas.nativeElement;
 
     this.context2D = this.canvasElement.getContext('2d');
