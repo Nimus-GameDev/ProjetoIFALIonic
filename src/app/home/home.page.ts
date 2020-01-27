@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 
 import { AppConfig } from '../classes/config/app-config';
+import { MapConfig } from '../classes/config/map-config';
 import { DrawAreaService } from '../services/draw-area.service';
 import { DrawMapService } from '../services/draw-map.service';
 import { MapControllerService } from '../services/map-controller.service';
-import { MapConfig } from '../classes/config/map-config';
-import { ToastController } from '@ionic/angular';
-import { CrudAreaService } from '../services/crud-area.service';
 
 @Component({
   selector: 'app-home',
@@ -44,8 +43,7 @@ export class HomePage implements OnInit {
   constructor(private drawMap: DrawMapService,
               private drawArea: DrawAreaService,
               private mapCtrl: MapControllerService,
-              private toast: ToastController,
-              private crudArea: CrudAreaService) {
+              private toast: ToastController) {
     this.iconStar = AppConfig.imgBntStar;
     this.iconSquare = AppConfig.imgBntSquareDefault;
   }
@@ -88,6 +86,8 @@ export class HomePage implements OnInit {
   onMove(event) {
     if (!this.isZoom && !this.drawAreaActived) {
       this.drawMap.touchMove(event);
+    } else if (this.drawAreaActived) {
+      this.drawArea.touchMove(event);
     }
   }
 
@@ -140,24 +140,25 @@ export class HomePage implements OnInit {
       // this.contador--;
     }
 
-
     if ( this.scales.scale2 < this.scales.scale1) {
       this.zoomOut();
     } else if (this.scales.scale2 > this.scales.scale1) {
       this.zoomIn();
     }
     this.drawMap.updateDraw();
+
   }
 
   zoomOut() {
-    if ( this.scales.scale > 0.2) {
+    if ( this.scales.scale > 0.5) {
       this.scales.scale -= MapConfig.zoomSensibility * Math.abs( this.pinchScale.end - this.pinchScale.start );
-    } else if ( this.scales.scale <= 0.2) {
-      this.scales.scale = 0.2;
+    } else if ( this.scales.scale <= 0.5) {
+      this.scales.scale = 0.5;
     }
 
     console.log('out ' +  ( this.pinchScale.end - this.pinchScale.start ) );
     this.updateScale();
+
   }
 
   zoomIn() {
@@ -168,13 +169,13 @@ export class HomePage implements OnInit {
 
   zIn() {
     console.log(MapConfig.scale);
-    MapConfig.scale += MapConfig.scale >= 3 ? 0 :  0.01;
+    MapConfig.scale += MapConfig.scale >= 3 ? 0 :  0.2;
     this.drawMap.updateDraw();
   }
 
   zOut() {
     console.log(MapConfig.scale);
-    MapConfig.scale -= MapConfig.scale <= 0.5 ? 0 :  0.01;
+    MapConfig.scale -= MapConfig.scale <= 0.5 ? 0 :  0.2;
     this.drawMap.updateDraw();
   }
 
@@ -194,6 +195,8 @@ export class HomePage implements OnInit {
     this.registerArea = false;
     this.area.name = undefined;
     this.area.description = undefined;
+
+    this.drawMap.updateDraw();
   }
 
   addArea() {
@@ -204,6 +207,7 @@ export class HomePage implements OnInit {
     this.area.name = undefined;
     this.area.description = undefined;
     this.onDrawSquare();
+    this.drawMap.updateDraw();
   }
 
 }

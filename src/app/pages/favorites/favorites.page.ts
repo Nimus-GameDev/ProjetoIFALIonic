@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AreasControllerService } from '../../services/areas-controller.service';
-import { DrawMapService } from '../../services/draw-map.service';
-import { CrudAreaService } from '../../services/crud-area.service';
+import { Area } from '../../classes/objects/area';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-favorites',
@@ -10,48 +10,59 @@ import { CrudAreaService } from '../../services/crud-area.service';
 })
 export class FavoritesPage implements OnInit {
 
-  public edit: boolean = false;
+  public edit = false;
   public editID: number = undefined;
 
-  areas = [];
+  public newArea: Area;
 
-  constructor(private areasCtrl: AreasControllerService, private drawMap: DrawMapService,
-    private crudArea: CrudAreaService) { }
+  areas: Area[] = [];
+
+  constructor(private areasService: AreasControllerService, private toastCtrl: ToastController) { }
+
+  ionViewWillEnter() {
+   this.loadAreas();
+  }
 
   ngOnInit() {
 
-    this.crudArea.readAreas().subscribe(data => {
-      this.areas = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          name: e.payload.doc.data()['name'],
-          description: e.payload.doc.data()['description'],
-          x: e.payload.doc.data()['x'],
-          y: e.payload.doc.data()['y'],
-          width: e.payload.doc.data()['width'],
-          height: e.payload.doc.data()['height']
-        };
-      });
-      console.log(this.areas);
+  }
+
+  async loadAreas() {
+    this.areas = await this.areasService.getAll();
+  }
+
+  async updateArea(area) {
+    console.log('UpdateArea: ', [area.name, area.description, area.x, area.y, area.width, area.height]);
+    await this.areasService.save(area).then( async () => {
+      const toast = await this.toastCtrl.create(
+        {message: 'Atualizado com sucesso!', duration: 2000}
+      );
+      toast.present();
+      await this.loadAreas();
+      this.edit = false;
+    }).catch( (error) => {
+      console.log('Erro ao atualizar: ', error);
     });
-
   }
 
-  remove(id: any) {
-    this.crudArea.remove(id);
-    this.drawMap.updateDraw();
-  }
-
-  editArea(area: any) {
+  editArea(area) {
     this.edit = true;
-
     this.editID = area.id;
-
   }
 
-  salvarDados(area: any) {
-
+  async remove(id: number) {
+    console.log('Deletando');
+    await this.areasService.delete(id).then( async () => {
+      const toast = await this.toastCtrl.create(
+        {message: 'Area deletada com sucesso!', duration: 2000}
+      );
+      toast.present();
+      this.loadAreas();
+    }).catch((error) => {
+      console.log('Erro ao deletar: ', error);
+    });
   }
+
 
   cancelar() {
     this.edit = false;

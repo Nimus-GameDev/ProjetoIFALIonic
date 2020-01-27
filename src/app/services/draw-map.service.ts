@@ -1,24 +1,22 @@
-import { Injectable, OnInit } from '@angular/core';
-import { AreasControllerService } from './areas-controller.service';
-import { MapControllerService } from './map-controller.service';
+import { Injectable, OnInit, OnChanges } from '@angular/core';
+
 import { MapConfig } from '../classes/config/map-config';
-import { CrudAreaService } from './crud-area.service';
-import { resolve } from 'url';
+import { AreasControllerService } from './areas-controller.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class DrawMapService implements OnInit{
+export class DrawMapService implements OnInit, OnChanges{
 
   private canvas: any;
   private contexto2D: any;
 
-  x: number = 0;
-  y: number = 0;
+  x = 0;
+  y = 0;
 
-  deslX: number = 0;
-  deslY: number = 0;
+  deslX = 0;
+  deslY = 0;
 
   touchPosition: any = {
     initialX: 0,
@@ -37,36 +35,22 @@ export class DrawMapService implements OnInit{
 
   areas = [];
 
-  constructor( private crudArea: CrudAreaService, private areasCtrl: AreasControllerService) {
-    this.crudArea.readAreas().subscribe(data => {
-      this.areas = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          name: e.payload.doc.data()['name'],
-          description: e.payload.doc.data()['description'],
-          x: e.payload.doc.data()['x'],
-          y: e.payload.doc.data()['y'],
-          width: e.payload.doc.data()['width'],
-          height: e.payload.doc.data()['height']
-        };
-      });
-      this.updateDraw();
-    });
+  constructor(private areaService: AreasControllerService) {
   }
 
   ngOnInit(): void {
+
+  }
+  ngOnChanges(): void {
+    //this.loadAreas();
   }
 
-  getAreas() {
- 
-  }
-
-  async initDraw(canvas: any) {
-
+  initDraw(canvas: any) {
     this.canvas = canvas;
 
     console.log(this.canvas);
-    // Init Position x and y
+
+    // Init Position x and y of deslocation
     this.deslX = this.canvas.width / 2;
     this.deslY = this.canvas.height / 2;
 
@@ -75,22 +59,25 @@ export class DrawMapService implements OnInit{
     // Context2d in Canvas
     this.contexto2D = this.canvas.getContext('2d');
 
-    console.log(canvas);
+    // Drawing the elements of map
     this.draw(this.deslX, this.deslY);
   }
 
-
+  // Update Elements
   updateDraw() {
     this.draw(this.deslX, this.deslY);
   }
-  // Draw Elements
-  draw(deslX: number, deslY: number) {
 
+  // Draw Elements
+  async draw(deslX: number, deslY: number) {
+    // scale of world
     const scale: number = MapConfig.scale;
 
+    // Cleaning the World
     this.contexto2D.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    let map = [
+    // Map in bits
+    const map = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
       [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
       [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
@@ -108,41 +95,53 @@ export class DrawMapService implements OnInit{
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
 
-    for (let pixelH = 0; pixelH < map.length; pixelH++) {
-        for ( let pixelW = 0; pixelW < map[pixelH].length; pixelW++) {
-          // tslint:disable-next-line: max-line-length
-          if ( map[pixelH][pixelW]  !== 0) {
+    // Draw map in world
+    for (let pixelY = 0; pixelY < map.length; pixelY++) {
+        for ( let pixelX = 0; pixelX < map[pixelY].length; pixelX++) {
+          if ( map[pixelY][pixelX]  !== 0) {
             this.contexto2D.strokeRect(
-            Math.round( this.x + deslX + ( pixelW * ( this.pixelMapWidth * scale ) ) ),
-            Math.round( this.y + deslY +  ( pixelH * (this.pixelMapHeight * scale) ) ),
+            Math.round( this.x + deslX + ( pixelX * ( this.pixelMapWidth * scale ) ) ),
+            Math.round( this.y + deslY +  ( pixelY * (this.pixelMapHeight * scale) ) ),
             this.pixelMapWidth * scale, this.pixelMapHeight * scale);
           }
         }
     }
-
+    /*
+    this.contexto2D.globalAlpha = 0.5;
+    this.contexto2D.fillStyle = 'green';
     this.contexto2D.strokeStyle = 'green';
-    this.contexto2D.strokeRect(
-      deslX + 10 + ( 1 * scale ),
-      deslY + 20 + ( 1 * scale ),
-      100 * scale,
-      100 * scale
-    );
+    this.contexto2D.fillRect(
+      deslX  + (20 * scale) , // deslocalmento + ( posicao * scale )
+      deslY + (20 * scale) , // deslocalmento + ( posicao * scale )
+      20 * scale, // width * scale
+      50 * scale // height * scale
+    ); */
+    this.areas = await this.areaService.getAll();
 
-    this.areas.forEach( (area) => {
-      this.contexto2D.strokeStyle = 'red';
-      this.contexto2D.strokeRect(
-        deslX + area.x,
-        deslY + area.y,
+    this.areas.forEach(  (area) => {
+      //this.contexto2D.strokeStyle = 'red';
+      this.contexto2D.globalAlpha = 0.2;
+      this.contexto2D.fillStyle = 'green';
+      this.contexto2D.fillRect(
+        deslX + (area.x * scale),
+        deslY + (area.y * scale),
         area.width * scale,
         area.height * scale
        );
       console.log(area);
     });
 
+    this.contexto2D.globalAlpha = 1;
     this.contexto2D.strokeStyle = 'black';
 
   }
 
+  async loadAreas() {
+    this.areas = await this.areaService.getAll();
+    this.updateDraw();
+  }
+
+  // Lembre-se de mudar isso para um outro service
   touchDown(event) {
     console.log('Alert - touchDown actived.');
 
@@ -160,6 +159,9 @@ export class DrawMapService implements OnInit{
     this.touchPosition.initialX = clientX;
     this.touchPosition.initialY = clientY;
 
+
+    this.contexto2D.font = '20px serif';
+    this.contexto2D.fillText('X: ' + clientX + ' Y: ' + clientY, 20, 20);
 
     this.touchIsPressed = true;
   }

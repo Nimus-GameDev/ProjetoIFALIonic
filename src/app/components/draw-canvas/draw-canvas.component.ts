@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { DrawMapService } from '../../services/draw-map.service';
+
 import { DrawAreaService } from '../../services/draw-area.service';
-import { CrudAreaService } from '../../services/crud-area.service';
+import { DrawMapService } from '../../services/draw-map.service';
 
 @Component({
   selector: 'draw-canvas',
@@ -33,10 +33,10 @@ export class DrawCanvasComponent implements OnInit {
     this.renderer.setAttribute(this.canvasElement, 'height', this.platform.height() + ' ' );
     this.renderer.setAttribute(this.canvasElement, 'background', 'red');
     this.drawMap.initDraw(this.canvasElement);
-    //this.drawArea.initDraw(this.canvasElement);
+    this.drawArea.initDraw(this.canvasElement);
   }
 
-  //Reajusta o canvas para as dimensoes da tela
+  // Reajusta o canvas para as dimensoes da tela
   click(event) {
     console.log(event);
     this.renderer.setAttribute(this.canvasElement, 'width', this.platform.width() + ' ');

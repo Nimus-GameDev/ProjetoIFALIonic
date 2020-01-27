@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CrudAreaService } from './crud-area.service';
+import { DatabaseService } from './database.service';
 
-describe('CrudAreaService', () => {
+describe('DatabaseService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: CrudAreaService = TestBed.get(CrudAreaService);
+    const service: DatabaseService = TestBed.get(DatabaseService);
     expect(service).toBeTruthy();
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DrawMapService } from './draw-map.service';
+
 import { AreasControllerService } from './areas-controller.service';
-import { CrudAreaService } from './crud-area.service';
+import { DrawMapService } from './draw-map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,7 @@ export class DrawAreaService {
 
   constructor(
     private areasCtrl: AreasControllerService,
-    private mapDraw: DrawMapService,
-    private crudArea: CrudAreaService
+    private mapDraw: DrawMapService
     ) {
   }
 
@@ -33,25 +32,10 @@ export class DrawAreaService {
     this.canvas = canvasElement;
     this.context2d = this.canvas.getContext('2d');
 
-    //this.drawAreas();
+    // this.drawAreas();
   }
 
   private drawAreas() {
-
-    this.crudArea.readAreas().subscribe(data => {
-      this.areas = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          name: e.payload.doc.data()['name'],
-          description: e.payload.doc.data()['description'],
-          x: e.payload.doc.data()['x'],
-          y: e.payload.doc.data()['y'],
-          width: e.payload.doc.data()['width'],
-          height: e.payload.doc.data()['height']
-        };
-      });
-      console.log(this.areas);
-    });
 
     this.areas.forEach( (area) => {
       this.context2d.fillRect(area.x, area.y, area.width, area.height);
@@ -62,8 +46,8 @@ export class DrawAreaService {
 
   public touchDown(event) {
     console.log(event);
-    let clientX = event.changedTouches[0].clientX;
-    let clientY = event.changedTouches[0].clientY;
+    const clientX = event.changedTouches[0].clientX;
+    const clientY = event.changedTouches[0].clientY;
 
     this.touchPosition.initX = clientX;
     this.touchPosition.initY = clientY;
@@ -74,8 +58,8 @@ export class DrawAreaService {
   }
 
   public touchUp(event) {
-    let clientX = event.changedTouches[0].clientX;
-    let clientY = event.changedTouches[0].clientY;
+    const clientX = event.changedTouches[0].clientX;
+    const clientY = event.changedTouches[0].clientY;
 
     this.touchPosition.endX = clientX;
     this.touchPosition.endY = clientY;
@@ -84,18 +68,34 @@ export class DrawAreaService {
     console.log('endY: ' + Math.round(this.touchPosition.endY));
 
   }
-
+  // draw area in move
   public touchMove(event) {
-    let clientX = event.changedTouches[0].clientX;
-    let clientY = event.changedTouches[0].clientY;
+    const clientX = event.changedTouches[0].clientX;
+    const clientY = event.changedTouches[0].clientY;
 
     this.touchPosition.updateX = clientX;
     this.touchPosition.updateY = clientY;
 
     console.log('updateX: ' + Math.round(this.touchPosition.updateX));
     console.log('updateY: ' + Math.round(this.touchPosition.updateY));
-  }
 
+    console.log('Draw move');
+
+    this.mapDraw.updateDraw();
+    this.context2d.strokeStyle = 'red';
+    this.context2d.strokeRect(
+    this.touchPosition.initX < this.touchPosition.updateX ? this.touchPosition.initX : this.touchPosition.updateX, // x
+    this.touchPosition.initY < this.touchPosition.updateY ? this.touchPosition.initY : this.touchPosition.updateY, // y
+    this.touchPosition.updateX > this.touchPosition.initX ? // width
+    this.touchPosition.updateX - this.touchPosition.initX :
+    this.touchPosition.initX - this.touchPosition.updateX,
+    this.touchPosition.updateY > this.touchPosition.initY ? // height
+    this.touchPosition.updateY - this.touchPosition.initY :
+    this.touchPosition.initY - this.touchPosition.updateY
+    );
+    this.context2d.strokeStyle = 'black';
+  }
+  // add area
   public addArea(name: string, description: string) {
     this.areasCtrl.addArea(
       name,

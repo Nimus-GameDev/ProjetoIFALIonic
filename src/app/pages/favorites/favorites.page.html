@@ -45,14 +45,14 @@
                 <ion-label position="stacked">Nome
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input maxlength="50" value="{{area.name}}" placeholder="Nome"></ion-input>
+                <ion-input maxlength="50" value="{{area.name}}" placeholder="Nome" [(ngModel)]="area.name"></ion-input>
             </ion-item>
             <!--Description-->
             <ion-item>
                 <ion-label position="stacked">Descrição
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Descrição">
+                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Descrição" [(ngModel)]="area.description">
                 </ion-textarea>
             </ion-item>
 
@@ -72,7 +72,7 @@
                 <ion-input disabled value="{{area.height}}"></ion-input>
             </ion-item>
 
-            <ion-button expand="block" mode="ios" size="small" slot="start" (click)="salvarDados(area)">
+            <ion-button expand="block" mode="ios" size="small" slot="start" (click)="updateArea(area)">
                 Confirmar
             </ion-button>
 
