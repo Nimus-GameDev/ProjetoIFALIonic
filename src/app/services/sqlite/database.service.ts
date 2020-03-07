@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 
@@ -7,7 +8,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 })
 export class DatabaseService {
 
-  database: SQLiteObject;
+   database: SQLiteObject;
   databaseName = 'slamduino.db';
 
   constructor(private sqlite: SQLite, private sqlitePorter: SQLitePorter) { }
@@ -38,7 +39,4 @@ export class DatabaseService {
   executeSql(sql: string, params?: any[] ) {
     return this.database.executeSql(sql, params);
   }
-
-
-
 }

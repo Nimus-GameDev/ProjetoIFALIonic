@@ -10,66 +10,66 @@
     <ion-card *ngFor="let area of areas" color="light">
 
         <!-- Informacoes Atuais -->
-        <ion-item *ngIf="!edit || area.id != editID" color="tertiary">
+        <ion-item *ngIf="!edit || area.getId != editID" color="tertiary">
             <ion-card-title>
-                {{area.name}}
+                {{area.getName}}
             </ion-card-title>
 
             <ion-button fill="outline" slot="end" (click)="editArea(area)" color="light">
                 <ion-icon name="create"></ion-icon>
             </ion-button>
 
-            <ion-button fill="outline" slot="end" (click)="remove(area.id)" color="light">
+            <ion-button fill="outline" slot="end" (click)="remove(area.getId)" color="light">
                 <ion-icon name="trash"></ion-icon>
             </ion-button>
         </ion-item>
 
-        <ion-card-content *ngIf="!edit || area.id != editID">
+        <ion-card-content *ngIf="!edit || area.getId != editID">
             <ion-text>
-                {{area.description}}
+                {{area.getDescription}}
             </ion-text>
             <br>
-            <ion-text>x: {{area.x}} | y: {{area.y}}</ion-text>
+            <ion-text>x: {{area.getX}} | y: {{area.getY}}</ion-text>
         </ion-card-content>
 
         <!-- Informacoes em modo de Edicao -->
-        <ion-item *ngIf=" edit && area.id == editID">
+        <ion-item *ngIf=" edit && area.getId == editID">
             <ion-card-title>
-                Editando: {{ area.name}}
+                Editando: {{ area.getName}}
             </ion-card-title>
         </ion-item>
 
-        <ion-card-content *ngIf="edit && area.id == editID">
+        <ion-card-content *ngIf="edit && area.getId == editID">
             <!--Name-->
             <ion-item>
                 <ion-label position="stacked">Nome
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-input maxlength="50" value="{{area.name}}" placeholder="Nome" [(ngModel)]="area.name"></ion-input>
+                <ion-input maxlength="50" value="{{area.getName}}" placeholder="Nome" [(ngModel)]="area.getName"></ion-input>
             </ion-item>
             <!--Description-->
             <ion-item>
                 <ion-label position="stacked">Descrição
                     <ion-text color="danger">*</ion-text>
                 </ion-label>
-                <ion-textarea maxlenght="300" value="{{area.description}}" placeholder="Descrição" [(ngModel)]="area.description">
+                <ion-textarea maxlenght="300" value="{{area.getDescription}}" placeholder="Descrição" [(ngModel)]="area.getDescription">
                 </ion-textarea>
             </ion-item>
 
             <!--X and Y-->
             <ion-item>
                 <ion-label>x: </ion-label>
-                <ion-input disabled value="{{area.x}}" color="primary"></ion-input>
+                <ion-input disabled value="{{area.getX}}" color="primary"></ion-input>
                 <ion-label>y: </ion-label>
-                <ion-input disabled value="{{area.y}}" color="primary"></ion-input>
+                <ion-input disabled value="{{area.getY}}" color="primary"></ion-input>
             </ion-item>
 
             <!--Width and Height-->
             <ion-item>
                 <ion-label>largura: </ion-label>
-                <ion-input disabled value="{{area.width}}"></ion-input>
+                <ion-input disabled value="{{area.getWidth}}"></ion-input>
                 <ion-label>altura: </ion-label>
-                <ion-input disabled value="{{area.height}}"></ion-input>
+                <ion-input disabled value="{{area.getHeight}}"></ion-input>
             </ion-item>
 
             <ion-button expand="block" mode="ios" size="small" slot="start" (click)="updateArea(area)">

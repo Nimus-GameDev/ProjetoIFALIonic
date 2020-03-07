@@ -1,0 +1,52 @@
+<ion-content [scrollEvents]="false" (fullscreen)="true">
+
+    <map-canvas (touchstart)="down($event)" (touchend)="up($event)" (touchmove)="move($event)" (pinchstart) = "pinchStart($event)" (pinchend) = "pinchEnd($event)" (pinchmove) = "pinchMove($event)"></map-canvas>
+
+    <!-- Tela de Cadastro -->
+    <div *ngIf="isRegister" class="register">
+
+        <ion-card>
+            <ion-item color="primary" id="title">
+                <ion-card-title color="light">
+                    Register Area
+                </ion-card-title>
+            </ion-item>
+
+            <ion-card-content class="content">
+                <!--Name-->
+                <ion-item id="login">
+                    <ion-label position="floating">Nome
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-input maxlength="50" [(ngModel)]="area.name"></ion-input>
+                </ion-item>
+                <!--Description-->
+                <ion-item id="description">
+                    <ion-label position="floating">Descrição
+                        <ion-text color="danger">*</ion-text>
+                    </ion-label>
+                    <ion-textarea maxlenght="300" [(ngModel)]="area.description">
+                    </ion-textarea>
+                </ion-item>
+
+                <ion-button expand="block" mode="ios" size="small" slot="start" (click)="addArea()">
+                    Confirm
+                </ion-button>
+
+                <ion-button expand="block" mode="ios" size="small" slot="end" (click)="cancel()">
+                    Cancel
+                </ion-button>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+    <div *ngIf="!isRegister">
+        <ion-fab-button id="fabSquare" (touchstart)="onDrawActived()">
+            <img [src]=iconSquare/>
+        </ion-fab-button>
+
+        <ion-fab-button id="fabStar" routerLink="/favorites">
+            <img [src]=iconStar/>
+        </ion-fab-button>
+    </div>
+</ion-content>
