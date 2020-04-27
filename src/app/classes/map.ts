@@ -24,8 +24,8 @@ export class Map implements OnInit {
 
     public sensitivy = 2;
 
-    public pixelMapWidth = 5;
-    public pixelMapHeight = 5;
+    public pixelMapWidth = 1;
+    public pixelMapHeight = 1;
 
     public mapCtrl: MapController;
 
@@ -55,19 +55,20 @@ export class Map implements OnInit {
         this.clearScreen();
         this.drawMap();
     }
-
+    
     public drawMap() {
+        /*
         //console.log('Context: ' + this.context);
         for (let pixelY = 0; pixelY < this.map.length; pixelY++) {
-            for ( let pixelX = 0; pixelX < this.map[pixelY].length; pixelX++) {
-              if ( this.map[pixelY][pixelX]  !== 0) {
+            for ( let pixelX = 0; pixelX < this.map.length; pixelX++) {
+              if ( this.map[pixelY] == 1) {
                 this.context.strokeRect(
                 Math.round( this.position.x + this.displacement.x + ( pixelX * ( this.pixelMapWidth * this.scale ) ) ),
                 Math.round( this.position.x + this.displacement.y +  ( pixelY * (this.pixelMapHeight * this.scale) ) ),
                 this.pixelMapWidth * this.scale, this.pixelMapHeight * this.scale);
               }
             }
-        }
+        }*/
 
     }
 

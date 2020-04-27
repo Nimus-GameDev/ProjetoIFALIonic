@@ -30,8 +30,10 @@
     "cordova-android": "8.1.0",
     "cordova-sqlite-storage": "4.0.0",
     "core-js": "^2.5.4",
+    "default-gateway": "^6.0.0",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.5.1",
+    "sockets-for-cordova": "^1.0.0",
     "tslib": "^1.9.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "1.1.1",
     "zone.js": "~0.9.1"
@@ -80,7 +82,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cz.blocshop.socketsforcordova": {}
     },
     "platforms": [
       "android"

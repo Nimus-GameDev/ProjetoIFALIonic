@@ -72,8 +72,6 @@ export class MapPage implements OnInit {
     this.map.updateMap();
   }
 
-  a
-
   touch(event) {
     // console.log(this.mapCtrl.getCanvas);
   }

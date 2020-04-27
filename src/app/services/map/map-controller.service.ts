@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class MapControllerService {
   private context: any;
 
   // Map in bits
-  private map = [
+  private map;
+  /* [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
@@ -25,7 +27,7 @@ export class MapControllerService {
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-  ];
+  ]; */
 
   constructor() { }
 
@@ -34,6 +36,7 @@ export class MapControllerService {
     this.context = context;
     console.log(canvas);
     console.log(context);
+    this.map = ConnectionService.data;
   }
 
   public get getCanvas(): any {
