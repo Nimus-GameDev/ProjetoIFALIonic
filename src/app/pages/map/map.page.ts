@@ -42,7 +42,7 @@ export class MapPage implements OnInit {
   ngOnInit() {
     
     setTimeout(() => {
-      this.areaCtrl.loadAreas();
+      this.areas = this.areaCtrl.loadAreas();
     }, 2);
 
   }
@@ -81,6 +81,7 @@ export class MapPage implements OnInit {
       this.drawArea.touchDown(event);
     } else if ( !this.map.isZoom ){
       this.map.touchDown(event);
+      console.log("MAPPAG-Down");
     }
   }
   up(event) {
@@ -89,6 +90,7 @@ export class MapPage implements OnInit {
       this.isRegister = true;
     } else if ( !this.map.isZoom)  {
       this.map.touchUp(event);
+      console.log("MAPPAG-UP");
     }
   }
 
@@ -104,14 +106,16 @@ export class MapPage implements OnInit {
   }
 
   pinchStart(event) {
-    console.log("pinchStart brow");
+    this.map.isZoom = true;
+    console.log("MAPPAG-pinchStart");
     this.map.pinchStart(event);
     this.map.updateMap()
     this.map.drawArea(this.areas);
   }
   pinchEnd(event) {
+    this.map.isZoom = false;
     this.map.pinchEnd(event);
-    
+    console.log("MAPPAG-pinchEnd");
     this.map.updateMap()
     this.map.drawArea(this.areas);
   }

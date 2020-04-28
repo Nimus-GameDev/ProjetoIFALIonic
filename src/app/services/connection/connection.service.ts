@@ -28,7 +28,7 @@ export class ConnectionService {
          return hasError;
        };
 
-      this.socket.open("192.168.2.9", port, () => {
+      this.socket.open("192.168.2.13", port, () => {
         alert("Connected to " + port);
       }, (e) => {
         alert("Error to connect" + e);
@@ -49,11 +49,14 @@ export class ConnectionService {
   }
 
   read() {
+    var byteArray = ""
     if ( ConnectionService.data != null || ConnectionService.data != undefined ) {
-      
-      alert(ConnectionService.data);
-      
+
+      byteArray = String.fromCharCode.apply(null, ConnectionService.data);
+      alert(byteArray);
+      alert(byteArray.indexOf('1'));
     }
+    alert(byteArray);
     return ConnectionService.data;
   }
 

@@ -86,7 +86,7 @@ export class MapController {
 
     public pinchStart(event, scale: number){
         console.log('scale: ', scale);
-        console.log("pinchStart");
+        //console.log("pinchStart");
         this.scales.scale = scale;
 
         this.pinch.startScale = event.scale;
@@ -95,27 +95,29 @@ export class MapController {
     public pinchEnd(event) {
         this.pinch.endScale = event.scale;
 
-        console.log("pinchEnd");
+        //console.log("pinchEnd");
         if ( this.pinch.startScale > this.pinch.endScale ) {
             this.zoomOut();
         } else {
             this.zoomIn();
         }
+        this.contador--;
 
     }
 
     pinchMove(event) {
 
+        this.pinch.endScale = event.scale;
       if ( this.contador === 1) {
         this.scales.scale1 = this.pinch.startScale;
         this.scales.scale2 = event.scale;
         this.contador++;
       } else if (this.contador === 2) {
         this.scales.scale1 = this.scales.scale2;
-        console.log('Scale1: ' + this.scales.scale1);
+        //console.log('Scale1: ' + this.scales.scale1);
         this.scales.scale2 = event.scale;
-        console.log('Scale2: ' + this.scales.scale2);
-        // this.contador--;
+        //console.log('Scale2: ' + this.scales.scale2);
+        //this.contador--;
       }
 
       if ( this.scales.scale2 < this.scales.scale1) {
@@ -128,7 +130,7 @@ export class MapController {
     private zoomIn() {
         this.scales.scale +=  this.sensitivity * Math.abs( this.pinch.endScale - this.pinch.startScale );
         
-        console.log('scaleIn: ', this.scales.scale);
+        //console.log('scaleIn: ', this.scales.scale);
     }
 
     private zoomOut() {
@@ -139,7 +141,7 @@ export class MapController {
             this.scales.scale = 0.5;
         }
 
-        console.log('scaleOut: ', this.scales.scale);
+        //console.log('scaleOut: ', this.scales.scale);
     }
 
     public get getScale():number {

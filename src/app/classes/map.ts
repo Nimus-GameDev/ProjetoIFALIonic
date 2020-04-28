@@ -24,12 +24,14 @@ export class Map implements OnInit {
 
     public sensitivy = 2;
 
-    public pixelMapWidth = 1;
-    public pixelMapHeight = 1;
+    public pixelMapWidth = 20;
+    public pixelMapHeight = 20;
 
     public mapCtrl: MapController;
 
     public isTouch = false;
+
+    public countDown = 0;
 
     constructor(private mapCtrlServ: MapControllerService) {
         setTimeout(() => {
@@ -69,6 +71,12 @@ export class Map implements OnInit {
               }
             }
         }*/
+
+        this.context.strokeRect(
+            Math.round( this.position.x + this.displacement.x + ( 1 * ( this.pixelMapWidth * this.scale ) ) ),
+            Math.round( this.position.x + this.displacement.y +  ( 1 * (this.pixelMapHeight * this.scale) ) ),
+            this.pixelMapWidth * this.scale, this.pixelMapHeight * this.scale
+        );
 
     }
 
@@ -111,14 +119,24 @@ export class Map implements OnInit {
 
     public touchUp(event) {
         const position = this.mapCtrl.touchUp(event);
-        this.displacement.x = position.x;
-        this.displacement.y = position.y;
-        this.clearScreen();
-        this.drawMap();
-        this.drawArea(this.areas);
-        // console.log(position.x);
-        // console.log(position.y);
-        this.isTouch = false;
+        console.log("countDown: " + this.countDown);
+        if (this.countDown === 0 ) {
+            this.isZoom = false;
+        } else {
+            this.countDown--;
+        }
+        
+
+        if ( this.isTouch ) {
+            this.displacement.x = position.x;
+            this.displacement.y = position.y;
+            this.clearScreen();
+            this.drawMap();
+            this.drawArea(this.areas);
+            // console.log(position.x);
+            // console.log(position.y);
+            this.isTouch = false;
+        }
     }
 
     public touchMove(event) {
@@ -139,21 +157,17 @@ export class Map implements OnInit {
     public pinchStart(event) {
         this.isZoom = true;
         this.mapCtrl.pinchStart(event, this.scale);
-
-        console.log('pinch start')
-
+        this.countDown = 2;
     }
     public pinchEnd(event) {
         this.mapCtrl.pinchEnd(event);
         this.scale = this.mapCtrl.getScale;
-        console.log('scale: ', this.scale)
-        
-        this.isZoom = false;
+        //console.log('scale: ', this.scale)
     }
     public pinchMove(event) {
         this.mapCtrl.pinchMove(event);
         this.scale = this.mapCtrl.getScale;
-        console.log('scale: ', this.scale)
+        //console.log('scale: ', this.scale)
     }
 
     
